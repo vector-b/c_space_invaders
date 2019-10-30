@@ -19,19 +19,19 @@ typedef struct alien
 typedef struct placa_alienigiena
 {
 	char **data;
-	int linhas;
-	int colunas;
+	int linha;
+	int coluna;
+	int altura;
+	int largura;
 	int numero_aliens;
 
-}placa_alienigiena;
+}placa_a;
 
 mapa *geramapa(mapa *m, int nlin, int ncol);
-alien *inicializa_placa(mapa *m, placa *p, int linIni, int colIni)
-{
-	
-}
-
-
+placa_a *inicializa_placa(mapa *m, placa_a *p, int linIni, int colIni);
+void ande_alien(mapa *m, placa_a *p);
+void deletecolumn(mapa *m, placa_a *p, int *right);
+void deletetop(mapa *m, placa_a *p);
 
 
 
