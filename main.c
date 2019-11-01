@@ -13,14 +13,22 @@ int main()
 	clear();	
 	refresh();
 	getmaxyx(stdscr, nlin, ncol);
+	cbreak();               /* desabilita o buffer de entrada */
+    noecho();               /* não mostra os caracteres digitados */
+    nodelay(stdscr, TRUE);  /* faz com que getch não aguarde a digitação */
+    keypad(stdscr, TRUE);   /* permite a leitura das setas */
+    curs_set(FALSE);        /* não mostra o cursor na tela */
 	mapa *map;
 	map = geramapa(map,nlin,ncol);
 	placa_a *placa;
 	placa = inicializa_placa(map,placa, nlin, ncol);
+	canhao *c;
+	c = inicia_canhao(c,map,(nlin - 4), (ncol/2)-5);
 	if (right)
 		deletecolumn(map,placa,&right);
 	while (cont < 100)
 	{
+		busca_tiro(map);
 		if (map -> data[(placa -> linha)+ (placa -> altura)][(placa -> coluna) + (placa -> largura)] == '|')
 		{
 			right = 0;
@@ -40,16 +48,31 @@ int main()
 		if (right)
 			placa -> coluna++;
 		else
-		{
-			/* limpa_cima*/
 			placa -> coluna--;
-		}
 		ande_alien(map,placa);
 		if (right)
 			deletecolumn(map,placa,&right);
 		else
 			deletecolumn(map,placa,&right);
+		switch(getch()) {
+    		case 'd':
+    		{
+    			c -> coluna++;
+        		break;
+    		}
+    		case 'a':
+    		{
+    			c -> coluna--;
+        		break;
+    		}
+    		case 'p':
+    		{
+    			atirar(c,map);
+        		break;
+    		}
 
+		}	
+		imprime_canhao(c,map);
 		for (i = 0; i <  (map -> linhas); i++)
 		{
 			for (j = 0; j < (map -> colunas); j++)
@@ -58,16 +81,7 @@ int main()
 		}
 		cont++;
 	}
-	/*while(cont < 4)
-	{
-		sleep(2);
-		clear();
-		refresh();
-		
-		
-	}
 
-	*/
 	getch();
  	endwin();
 

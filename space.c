@@ -52,11 +52,49 @@ placa_a *inicializa_placa(mapa *m, placa_a *p, int linIni, int colIni)
 		p -> data[i] = malloc(p -> largura*sizeof(p -> data[i]));
 	}
 
-	for (i = 0; i < (p -> altura); i++)
-		for (k = 0; k < (p -> largura); k++)
+	for (i = 0; i < p -> altura; i++)
+	{
+		p -> data[i][0] = ' ';
+		p -> data[i][p -> largura - 1] = ' ';
+	}
+	for (i = 0; i < p -> largura; i++)
+	{
+		p -> data[0][i] = ' ';
+		p -> data[p -> altura - 1][i] = ' ';
+	}
+	for (i = 1; i < p -> altura-1; i++)
+	{
+		for (k = 1; k < p -> largura-1; k++)
 		{
-			p -> data[i][k] = '+';
+			p -> data[i][k] = ' ';
 		}
+	}
+
+	for (i = 2; i < p -> largura - 4 ; i+= 4)
+	{
+		alien *a;
+		a = cria_alien(a,p,1,i,4,i+2,1);
+	}
+
+	for (i = 1; i < p -> largura - 6 ; i+= 6)
+	{
+		alien *a;
+		a = cria_alien(a,p,6,i,9,i+4,2);
+	}
+
+	for (i = 1; i < p -> largura - 6 ; i+= 6)
+	{
+		alien *a;
+		a = cria_alien(a,p,11,i,14,i+4,2);
+	}
+
+	for (i = 1; i < p -> largura - 6 ; i+= 6)
+	{
+		alien *a;
+		a = cria_alien(a,p,16,i,19,i+4,3);
+	}
+
+
 	return p;
 }
 void ande_alien(mapa *m, placa_a *p)
@@ -99,4 +137,125 @@ void deletetop(mapa *m, placa_a *p)
 	for (i = 0; i < p -> largura; i++)
 		m -> data[p -> linha - 1][p -> coluna + i] = ' ';
 	
+}
+	
+
+alien *cria_alien(alien *a, placa_a *p, int linIni,int colIni,int linEnd, int colEnd, int tipo)
+{
+	a = malloc(sizeof(a));
+	a -> linIni = linIni;
+	a -> colIni = colIni;
+	a -> linEnd = linEnd;
+	a -> colEnd = colEnd;
+	a -> tipo = tipo;
+	if (tipo == 1)
+	{
+		p -> data[linIni][colIni+1] = 'A';
+		p -> data[linIni+1][colIni] = 'A';
+		p -> data[linIni+1][colIni+1] = 'M';
+		p -> data[linIni+1][colIni+2] = 'A';
+		p -> data[linIni+2][colIni] = '/';
+		p -> data[linIni+2][colIni+1] = 'X';
+		p -> data[linIni+2][colIni+2] = '\\';
+	}
+	else if (tipo == 2)
+	{
+		p -> data[linIni][colIni] = '.';
+		p -> data[linIni][colIni+1] = 'v';
+		p -> data[linIni][colIni+2] = '_';
+		p -> data[linIni][colIni+3] = 'v';
+		p -> data[linIni][colIni+4] = '.';
+		p -> data[linIni+1][colIni] = '}';
+		p -> data[linIni+1][colIni+1] = 'W';
+		p -> data[linIni+1][colIni+2] = 'M';
+		p -> data[linIni+1][colIni+3] = 'W';
+		p -> data[linIni+1][colIni+4] = '{';
+		p -> data[linIni+2][colIni+1] = '/';
+		p -> data[linIni+2][colIni+2] = ' ';
+		p -> data[linIni+2][colIni+3] = '\\';
+	}
+	else if (tipo == 3)
+	{
+		p -> data[linIni][colIni] = ' ';
+		p -> data[linIni][colIni+1] = 'n';
+		p -> data[linIni][colIni+2] = 'm';
+		p -> data[linIni][colIni+3] = 'n';
+		p -> data[linIni][colIni+4] = ' ';
+		p -> data[linIni+1][colIni] = 'd';
+		p -> data[linIni+1][colIni+1] = 'b';
+		p -> data[linIni+1][colIni+2] = 'M';
+		p -> data[linIni+1][colIni+3] = 'd';
+		p -> data[linIni+1][colIni+4] = 'b';
+		p -> data[linIni+2][colIni] = '_';
+		p -> data[linIni+2][colIni+1] = '/';
+		p -> data[linIni+2][colIni+2] = '-';
+		p -> data[linIni+2][colIni+3] = '\\';
+		p -> data[linIni+2][colIni+4] = '_';
+
+	}
+	return a;
+}
+canhao *inicia_canhao(canhao *c, mapa *m, int lin, int col)
+{
+	int i,k;
+	c = malloc(sizeof(canhao));
+	c -> data = malloc(2 *sizeof(c -> data));
+	for (i = 0; i < 2; i++)
+	{
+		c -> data[i] = malloc(5 * sizeof(c -> data[i]));
+	}
+	c -> data[0][0] = ' ';
+	c -> data[0][1] = '/';
+	c -> data[0][2] = '^';
+	c -> data[0][3] = '\\';
+	c -> data[0][4] = ' ';
+	c -> data[1][0] = 'M';
+	c -> data[1][1] = 'M';
+	c -> data[1][2] = 'M';
+	c -> data[1][3] = 'M';
+	c -> data[1][4] = 'M';
+	for (i = 0; i < 2; i++)
+	{	
+		for (k = 0; k < 5; k++)
+		{
+			m -> data[lin + i][col + k] = c -> data[i][k]; 
+		}
+	}
+	c -> linha = lin;
+	c -> coluna = col;
+	return c;
+}
+void imprime_canhao(canhao *c, mapa *m)
+{
+	int i,k;
+	for (i = 0; i < 2; i++)
+	{	
+		for (k = 0; k < 5; k++)
+		{
+			m -> data[c -> linha + i][c -> coluna + k] = c -> data[i][k];
+			if (k == 0)
+				m -> data [c -> linha + i][c -> coluna + k - 1] = ' ';
+			else if (k == 4)
+				m -> data [c -> linha + i][c -> coluna + k + 1] = ' ';  
+		}
+	}	
+}
+void atirar(canhao *c,mapa *m)
+{
+	m -> data[c-> linha -1][c -> coluna+2] = '|';
+}
+void busca_tiro(mapa *m)
+{
+	int i,k;
+	for (i = 2; i <  m -> linhas - 2; i++)
+	{
+		for (k = 2; k < m -> colunas - 2; k++)
+		{
+			if (m -> data[i][k] == '|')
+			{
+				m -> data[i-1][k] = '|';
+				m -> data[i][k] = ' ';
+			}
+		}
+	}
 }

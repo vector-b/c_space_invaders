@@ -12,8 +12,8 @@ typedef struct alien
 {
 	int vivo;
 	int tipo; /* 1 -3 */
-	int ini_lin, ini_col;
-	int end_lin, end_col;
+	int linIni, colIni;
+	int linEnd, colEnd;
 }alien;
 
 typedef struct placa_alienigiena
@@ -27,11 +27,24 @@ typedef struct placa_alienigiena
 
 }placa_a;
 
+typedef struct canhao
+{
+	char **data;
+	int linha;
+	int coluna;
+}canhao;
+
 mapa *geramapa(mapa *m, int nlin, int ncol);
 placa_a *inicializa_placa(mapa *m, placa_a *p, int linIni, int colIni);
 void ande_alien(mapa *m, placa_a *p);
 void deletecolumn(mapa *m, placa_a *p, int *right);
 void deletetop(mapa *m, placa_a *p);
+alien *cria_alien(alien *a, placa_a *p, int linIni,int colIni,int linEnd, int colEnd, int tipo);
+canhao *inicia_canhao(canhao *c, mapa *m, int lin, int col);
+void imprime_canhao(canhao *c, mapa *m);
+void atirar(canhao *c,mapa *m);
+void busca_tiro(mapa *m);
+
 
 
 
