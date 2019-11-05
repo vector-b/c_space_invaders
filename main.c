@@ -28,7 +28,11 @@ int main()
 		deletecolumn(map,placa,&right);
 	while (cont < 100)
 	{
+		entra_tiro(map,placa);
 		busca_tiro(map);
+		busca_tiro_placa(placa);
+		sai_tiro(map, placa);
+
 		if (map -> data[(placa -> linha)+ (placa -> altura)][(placa -> coluna) + (placa -> largura)] == '|')
 		{
 			right = 0;

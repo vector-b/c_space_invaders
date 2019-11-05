@@ -70,25 +70,25 @@ placa_a *inicializa_placa(mapa *m, placa_a *p, int linIni, int colIni)
 		}
 	}
 
-	for (i = 2; i < p -> largura - 4 ; i+= 4)
+	for (i = 4; i < p -> largura - 4 ; i+= 7)
 	{
 		alien *a;
 		a = cria_alien(a,p,1,i,4,i+2,1);
 	}
 
-	for (i = 1; i < p -> largura - 6 ; i+= 6)
+	for (i = 1; i < p -> largura - 6 ; i+= 9)
 	{
 		alien *a;
 		a = cria_alien(a,p,6,i,9,i+4,2);
 	}
 
-	for (i = 1; i < p -> largura - 6 ; i+= 6)
+	for (i = 1; i < p -> largura - 6 ; i+= 9)
 	{
 		alien *a;
 		a = cria_alien(a,p,11,i,14,i+4,2);
 	}
 
-	for (i = 1; i < p -> largura - 6 ; i+= 6)
+	for (i = 1; i < p -> largura - 6 ; i+= 9)
 	{
 		alien *a;
 		a = cria_alien(a,p,16,i,19,i+4,3);
@@ -255,6 +255,43 @@ void busca_tiro(mapa *m)
 			{
 				m -> data[i-1][k] = '|';
 				m -> data[i][k] = ' ';
+			}
+		}
+	}
+}
+void entra_tiro(mapa *m, placa_a *p)
+{
+	int i;
+	for (i = 0; i < p -> largura; i++)
+	{
+		if (m -> data[p -> linha + p -> altura][p -> coluna + i] == '|')
+			p -> data[p->altura-1][i] = '|';
+	}
+}
+void sai_tiro(mapa *m, placa_a *p)
+{
+	int i;
+	for (i = 0; i < p -> largura; i++)
+	{
+		if (p -> data[0][i] == '|')
+		{
+			m -> data[p -> linha - 1][p -> coluna + i ] = '|';
+			p -> data[0][i] = ' ';
+		}
+
+	}
+}
+void busca_tiro_placa(placa_a *p)
+{
+	int i,k;
+	for (i = 1; i <  p -> altura ; i++)
+	{
+		for (k = 1; k < p ->  largura; k++)
+		{
+			if (p -> data[i][k] == '|')
+			{
+				p -> data[i-1][k] = '|';
+				p -> data[i][k] = ' ';
 			}
 		}
 	}
