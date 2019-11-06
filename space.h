@@ -45,7 +45,7 @@ void imprime_canhao(canhao *c, mapa *m);
 void atirar(canhao *c,mapa *m);
 void busca_tiro(mapa *m);
 void entra_tiro(mapa *m, placa_a *p);
-void busca_tiro_placa(placa_a *p);
+void busca_tiro_placa(placa_a *p, int dir, int *changed);
 void sai_tiro(mapa *m, placa_a *p);
 
 

@@ -8,6 +8,7 @@ int main()
 	int nlin,ncol;
 	int cont = 0;
 	int right = 1;
+	int changed = 0;
 	int i,j;
 	initscr();				
 	clear();	
@@ -26,22 +27,24 @@ int main()
 	c = inicia_canhao(c,map,(nlin - 4), (ncol/2)-5);
 	if (right)
 		deletecolumn(map,placa,&right);
-	while (cont < 100)
+	while (1)
 	{
 		entra_tiro(map,placa);
 		busca_tiro(map);
-		busca_tiro_placa(placa);
+		busca_tiro_placa(placa,right, &changed);
 		sai_tiro(map, placa);
 
 		if (map -> data[(placa -> linha)+ (placa -> altura)][(placa -> coluna) + (placa -> largura)] == '|')
 		{
 			right = 0;
+			changed = 1;
 			deletetop(map,placa);
 			deletecolumn(map,placa,&right);
 		}
 		else if (map -> data[(placa -> linha) -1 ][(placa -> coluna) - 1] == '|')
 		{
 			right = 1;
+			changed = 1;
 			deletetop(map,placa);
 			deletecolumn(map,placa,&right);
 		}
@@ -53,7 +56,9 @@ int main()
 			placa -> coluna++;
 		else
 			placa -> coluna--;
+
 		ande_alien(map,placa);
+		
 		if (right)
 			deletecolumn(map,placa,&right);
 		else

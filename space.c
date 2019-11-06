@@ -43,7 +43,7 @@ placa_a *inicializa_placa(mapa *m, placa_a *p, int linIni, int colIni)
 	p = malloc(sizeof(p));
 	p -> linha = 6;
 	p -> coluna = 4;
-	p -> altura = linIni*0.60;
+	p -> altura = linIni*0.40;
 	p -> largura = colIni*0.90;
 	int i,k;
 	p -> data = malloc(p -> altura * sizeof(p -> data));
@@ -54,13 +54,13 @@ placa_a *inicializa_placa(mapa *m, placa_a *p, int linIni, int colIni)
 
 	for (i = 0; i < p -> altura; i++)
 	{
-		p -> data[i][0] = ' ';
-		p -> data[i][p -> largura - 1] = ' ';
+		p -> data[i][0] = '*';
+		p -> data[i][p -> largura - 1] = '*';
 	}
 	for (i = 0; i < p -> largura; i++)
 	{
-		p -> data[0][i] = ' ';
-		p -> data[p -> altura - 1][i] = ' ';
+		p -> data[0][i] = '*';
+		p -> data[p -> altura - 1][i] = '*';
 	}
 	for (i = 1; i < p -> altura-1; i++)
 	{
@@ -281,7 +281,7 @@ void sai_tiro(mapa *m, placa_a *p)
 
 	}
 }
-void busca_tiro_placa(placa_a *p)
+void busca_tiro_placa(placa_a *p, int dir, int *changed)
 {
 	int i,k;
 	for (i = 1; i <  p -> altura ; i++)
@@ -290,7 +290,20 @@ void busca_tiro_placa(placa_a *p)
 		{
 			if (p -> data[i][k] == '|')
 			{
-				p -> data[i-1][k] = '|';
+				if (dir && *changed)
+				{
+					p -> data[i-1][k-1] = '|';
+					*changed = 0;
+				}
+				else if (!dir && *changed)
+				{
+					p -> data[i-1][k+1] = '|';
+					*changed = 0;
+				}
+				else if (dir)
+					p -> data[i-1][k] = '|';
+				else
+					p -> data[i-1][k] = '|';
 				p -> data[i][k] = ' ';
 			}
 		}
