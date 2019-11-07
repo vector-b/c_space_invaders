@@ -54,13 +54,13 @@ placa_a *inicializa_placa(mapa *m, placa_a *p, int linIni, int colIni)
 
 	for (i = 0; i < p -> altura; i++)
 	{
-		p -> data[i][0] = '*';
-		p -> data[i][p -> largura - 1] = '*';
+		p -> data[i][0] = ' ';
+		p -> data[i][p -> largura - 1] = ' ';
 	}
 	for (i = 0; i < p -> largura; i++)
 	{
-		p -> data[0][i] = '*';
-		p -> data[p -> altura - 1][i] = '*';
+		p -> data[0][i] = ' ';
+		p -> data[p -> altura - 1][i] = ' ';
 	}
 	for (i = 1; i < p -> altura-1; i++)
 	{
@@ -290,21 +290,25 @@ void busca_tiro_placa(placa_a *p, int dir, int *changed)
 		{
 			if (p -> data[i][k] == '|')
 			{
-				if (dir && *changed)
+				if (*changed == 0)
 				{
-					p -> data[i-1][k-1] = '|';
-					*changed = 0;
-				}
-				else if (!dir && *changed)
-				{
-					p -> data[i-1][k+1] = '|';
-					*changed = 0;
-				}
-				else if (dir)
-					p -> data[i-1][k] = '|';
+					if (dir)
+						p -> data[i-1][k-1] = '|';
+					else
+						p -> data[i-1][k+1] = '|';
+					p -> data[i][k] = ' ';
+
+				}	
 				else
-					p -> data[i-1][k] = '|';
-				p -> data[i][k] = ' ';
+				{
+					if (dir)
+						p -> data[i-1][k+1] = '|';
+					else
+						p -> data[i-1][k-1] = '|';
+					p -> data[i][k] = ' ';
+					*changed = 0;
+				}
+				
 			}
 		}
 	}

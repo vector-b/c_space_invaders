@@ -29,11 +29,6 @@ int main()
 		deletecolumn(map,placa,&right);
 	while (1)
 	{
-		entra_tiro(map,placa);
-		busca_tiro(map);
-		busca_tiro_placa(placa,right, &changed);
-		sai_tiro(map, placa);
-
 		if (map -> data[(placa -> linha)+ (placa -> altura)][(placa -> coluna) + (placa -> largura)] == '|')
 		{
 			right = 0;
@@ -48,6 +43,10 @@ int main()
 			deletetop(map,placa);
 			deletecolumn(map,placa,&right);
 		}
+		entra_tiro(map,placa);
+		busca_tiro(map);
+		sai_tiro(map, placa);
+		busca_tiro_placa(placa,right, &changed);
 
 		refresh();
 		usleep(100000);
