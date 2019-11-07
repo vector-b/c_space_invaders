@@ -3,6 +3,7 @@
 #include <unistd.h>
 #include <ncurses.h>
 #include "space.h"
+#include "lista.h"
 int main()
 {
 	int nlin,ncol;

@@ -4,6 +4,7 @@
 #include <ncurses.h>
 
 
+
 mapa *geramapa(mapa *m, int nlin, int ncol)
 {
 	int i,j,k;
