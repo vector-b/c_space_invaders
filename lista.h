@@ -22,3 +22,6 @@ typedef struct lista
     nodo *end;
     int size;
 }lista;
+
+lista *inicia_lista(lista *l);
+int insere_inicio_lista(int type, int lin, int col, int tam, int state, lista *l);

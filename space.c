@@ -71,7 +71,7 @@ placa_a *inicializa_placa(mapa *m, placa_a *p, int linIni, int colIni)
 		}
 	}
 
-	for (i = 4; i < p -> largura - 4 ; i+= 7)
+	for (i = 1; i < p -> largura - 5 ; i+= 7)
 	{
 		alien *a;
 		a = cria_alien(a,p,1,i,4,i+2,1);
@@ -210,11 +210,11 @@ canhao *inicia_canhao(canhao *c, mapa *m, int lin, int col)
 	c -> data[0][2] = '^';
 	c -> data[0][3] = '\\';
 	c -> data[0][4] = ' ';
-	c -> data[1][0] = 'M';
-	c -> data[1][1] = 'M';
-	c -> data[1][2] = 'M';
-	c -> data[1][3] = 'M';
-	c -> data[1][4] = 'M';
+	c -> data[1][0] = '=';
+	c -> data[1][1] = '=';
+	c -> data[1][2] = '=';
+	c -> data[1][3] = '=';
+	c -> data[1][4] = '=';
 	for (i = 0; i < 2; i++)
 	{	
 		for (k = 0; k < 5; k++)
