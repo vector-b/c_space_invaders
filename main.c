@@ -3,7 +3,6 @@
 #include <unistd.h>
 #include <ncurses.h>
 #include "space.h"
-#include "lista.h"
 int main()
 {
 	int nlin,ncol;
@@ -11,6 +10,8 @@ int main()
 	int right = 1;
 	int changed = 0;
 	int i,j;
+
+	/* Inicialização dos recursos ncurses */
 	initscr();				
 	clear();	
 	refresh();
@@ -20,12 +21,27 @@ int main()
     nodelay(stdscr, TRUE);  /* faz com que getch não aguarde a digitação */
     keypad(stdscr, TRUE);   /* permite a leitura das setas */
     curs_set(FALSE);        /* não mostra o cursor na tela */
+
+	/*Inicia a lista dinamica usada para os objetos do jogo */
+	lista *obj; 
+	obj = malloc(sizeof(obj));
+	if (!inicia_lista(obj))
+	{
+		printf("Memória Indisponivel\n");
+		exit(1);
+	}
+    /*Criação e inicialização do mapa */
 	mapa *map;
 	map = geramapa(map,nlin,ncol);
+
+	/*Criação e inicialização da placa(que faz a movimentação dos aliens)*/
 	placa_a *placa;
 	placa = inicializa_placa(map,placa, nlin, ncol);
-	canhao *c;
-	c = inicia_canhao(c,map,(nlin - 4), (ncol/2)-5);
+
+	/*Criação e inicialização do canhão*/
+	insere_inicio_lista(1,(nlin - 4), (ncol/2)-5,5,1,obj);
+	inicia_canhao(obj,map);
+
 	if (right)
 		deletecolumn(map,placa,&right);
 	while (1)
@@ -66,22 +82,22 @@ int main()
 		switch(getch()) {
     		case 'd':
     		{
-    			c -> coluna++;
+    			obj -> begin -> col++;
         		break;
     		}
     		case 'a':
     		{
-    			c -> coluna--;
+    			obj -> begin -> col--;
         		break;
     		}
     		case 'p':
     		{
-    			atirar(c,map);
+    			atirar(obj -> begin,map);
         		break;
     		}
 
 		}	
-		imprime_canhao(c,map);
+		imprime_canhao(obj -> begin ,map);
 		for (i = 0; i <  (map -> linhas); i++)
 		{
 			for (j = 0; j < (map -> colunas); j++)
@@ -93,7 +109,5 @@ int main()
 
 	getch();
  	endwin();
-
- 	/*mvprintw(row/2,(col-strlen(mesg))/2,"%s",mesg);*/
 	return 0;
 }

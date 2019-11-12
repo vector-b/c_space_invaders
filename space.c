@@ -196,54 +196,53 @@ alien *cria_alien(alien *a, placa_a *p, int linIni,int colIni,int linEnd, int co
 	}
 	return a;
 }
-canhao *inicia_canhao(canhao *c, mapa *m, int lin, int col)
+void *inicia_canhao(lista *l, mapa *m)
 {
 	int i,k;
-	c = malloc(sizeof(canhao));
-	c -> data = malloc(2 *sizeof(c -> data));
+	nodo *canhao;
+	canhao = l -> begin;
+
+	canhao -> data = malloc(2 *sizeof(canhao -> data));
 	for (i = 0; i < 2; i++)
 	{
-		c -> data[i] = malloc(5 * sizeof(c -> data[i]));
+		canhao -> data[i] = malloc(5 * sizeof(canhao -> data[i]));
 	}
-	c -> data[0][0] = ' ';
-	c -> data[0][1] = '/';
-	c -> data[0][2] = '^';
-	c -> data[0][3] = '\\';
-	c -> data[0][4] = ' ';
-	c -> data[1][0] = '=';
-	c -> data[1][1] = '=';
-	c -> data[1][2] = '=';
-	c -> data[1][3] = '=';
-	c -> data[1][4] = '=';
+	canhao -> data[0][0] = ' ';
+	canhao -> data[0][1] = '/';
+	canhao -> data[0][2] = '^';
+	canhao -> data[0][3] = '\\';
+	canhao -> data[0][4] = ' ';
+	canhao -> data[1][0] = '=';
+	canhao -> data[1][1] = '=';
+	canhao -> data[1][2] = '=';
+	canhao -> data[1][3] = '=';
+	canhao -> data[1][4] = '=';
 	for (i = 0; i < 2; i++)
 	{	
 		for (k = 0; k < 5; k++)
 		{
-			m -> data[lin + i][col + k] = c -> data[i][k]; 
+			m -> data[canhao -> lin + i][canhao -> col + k] = canhao -> data[i][k]; 
 		}
 	}
-	c -> linha = lin;
-	c -> coluna = col;
-	return c;
 }
-void imprime_canhao(canhao *c, mapa *m)
+void imprime_canhao(nodo *n, mapa *m)
 {
 	int i,k;
 	for (i = 0; i < 2; i++)
 	{	
 		for (k = 0; k < 5; k++)
 		{
-			m -> data[c -> linha + i][c -> coluna + k] = c -> data[i][k];
+			m -> data[n -> lin + i][n -> col + k] = n -> data[i][k];
 			if (k == 0)
-				m -> data [c -> linha + i][c -> coluna + k - 1] = ' ';
+				m -> data [n -> lin + i][n -> col + k - 1] = ' ';
 			else if (k == 4)
-				m -> data [c -> linha + i][c -> coluna + k + 1] = ' ';  
+				m -> data [n -> lin + i][n -> col + k + 1] = ' ';  
 		}
 	}	
 }
-void atirar(canhao *c,mapa *m)
+void atirar(nodo *n,mapa *m)
 {
-	m -> data[c-> linha -1][c -> coluna+2] = '|';
+	m -> data[ n -> lin -1][n -> col+2] = '|';
 }
 void busca_tiro(mapa *m)
 {
