@@ -32,8 +32,7 @@ typedef struct lista
     int size;
 }lista;
 
-int inicia_lista(lista *l);
-int insere_inicio_lista(int type, int lin, int col, int tam, int state, lista *l);
+
 
 
 
@@ -63,27 +62,38 @@ typedef struct placa_alienigiena
 
 }placa_a;
 
-typedef struct canhao
-{
-	char **data;
-	int linha;
-	int coluna;
-}canhao;
+/*Funções de manipulação de lista */
+
+int inicia_lista(lista *l);
+
+int insere_inicio_lista(int type, int lin, int col, int tam, int state, lista *l);
+
+
+/* Funções do jogo */
 
 mapa *geramapa(mapa *m, int nlin, int ncol);
+
 placa_a *inicializa_placa(mapa *m, placa_a *p, int linIni, int colIni);
+
 void ande_alien(mapa *m, placa_a *p);
+
 void deletecolumn(mapa *m, placa_a *p, int *right);
+
 void deletetop(mapa *m, placa_a *p);
+
 alien *cria_alien(alien *a, placa_a *p, int linIni,int colIni,int linEnd, int colEnd, int tipo);
+
 void *inicia_canhao(lista *l, mapa *m);
+
 void imprime_canhao(nodo *n, mapa *m);
+
 void atirar(nodo *n,mapa *m);
+
 void busca_tiro(mapa *m);
+
 void entra_tiro(mapa *m, placa_a *p);
+
 void busca_tiro_placa(placa_a *p, int dir, int *changed);
+
 void sai_tiro(mapa *m, placa_a *p);
-
-
-
 #endif

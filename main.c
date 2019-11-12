@@ -44,7 +44,7 @@ int main()
 
 	if (right)
 		deletecolumn(map,placa,&right);
-	while (1)
+	while (1/*ganhou, perdeu ou apertou esc*/)
 	{
 		if (map -> data[(placa -> linha)+ (placa -> altura)][(placa -> coluna) + (placa -> largura)] == '|')
 		{
@@ -61,12 +61,17 @@ int main()
 			deletecolumn(map,placa,&right);
 		}
 		entra_tiro(map,placa);
+
 		busca_tiro(map);
+
 		sai_tiro(map, placa);
+
 		busca_tiro_placa(placa,right, &changed);
 
 		refresh();
+
 		usleep(100000);
+
 		clear();
 		if (right)
 			placa -> coluna++;
