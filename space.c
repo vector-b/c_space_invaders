@@ -8,7 +8,6 @@
 mapa *geramapa(mapa *m, int nlin, int ncol)
 {
 	int i,j,k;
-	m = malloc(sizeof(m));
 	m ->  linhas = nlin;
 	m -> colunas = ncol-1;
 
@@ -39,7 +38,7 @@ mapa *geramapa(mapa *m, int nlin, int ncol)
 
 	return m;
 }
-placa_a *inicializa_placa(mapa *m, placa_a *p, int linIni, int colIni)
+placa_a *inicializa_placa(lista *l,mapa *m, placa_a *p, int linIni, int colIni)
 {
 	p = malloc(sizeof(p));
 	p -> linha = 6;
@@ -73,29 +72,23 @@ placa_a *inicializa_placa(mapa *m, placa_a *p, int linIni, int colIni)
 
 	for (i = 1; i < p -> largura - 5 ; i+= 7)
 	{
-		alien *a;
-		a = cria_alien(a,p,1,i,4,i+2,1);
+		cria_alien(l,p,1,i,4,i+2,1);
 	}
 
 	for (i = 1; i < p -> largura - 6 ; i+= 9)
 	{
-		alien *a;
-		a = cria_alien(a,p,6,i,9,i+4,2);
+		cria_alien(l,p,6,i,9,i+4,2);
 	}
 
 	for (i = 1; i < p -> largura - 6 ; i+= 9)
 	{
-		alien *a;
-		a = cria_alien(a,p,11,i,14,i+4,2);
+		cria_alien(l,p,11,i,14,i+4,2);
 	}
 
 	for (i = 1; i < p -> largura - 6 ; i+= 9)
 	{
-		alien *a;
-		a = cria_alien(a,p,16,i,19,i+4,3);
+		cria_alien(l,p,16,i,19,i+4,3);
 	}
-
-
 	return p;
 }
 void ande_alien(mapa *m, placa_a *p)
@@ -141,14 +134,9 @@ void deletetop(mapa *m, placa_a *p)
 }
 	
 
-alien *cria_alien(alien *a, placa_a *p, int linIni,int colIni,int linEnd, int colEnd, int tipo)
+lista *cria_alien(lista *l,placa_a *p, int linIni,int colIni,int linEnd, int colEnd, int tipo)
 {
-	a = malloc(sizeof(a));
-	a -> linIni = linIni;
-	a -> colIni = colIni;
-	a -> linEnd = linEnd;
-	a -> colEnd = colEnd;
-	a -> tipo = tipo;
+	nodo *n;
 	if (tipo == 1)
 	{
 		p -> data[linIni][colIni+1] = 'A';
@@ -158,6 +146,7 @@ alien *cria_alien(alien *a, placa_a *p, int linIni,int colIni,int linEnd, int co
 		p -> data[linIni+2][colIni] = '/';
 		p -> data[linIni+2][colIni+1] = 'X';
 		p -> data[linIni+2][colIni+2] = '\\';
+		insere_fim_lista(tipo + 1,linIni,colIni,3,1,l);
 	}
 	else if (tipo == 2)
 	{
@@ -174,6 +163,7 @@ alien *cria_alien(alien *a, placa_a *p, int linIni,int colIni,int linEnd, int co
 		p -> data[linIni+2][colIni+1] = '/';
 		p -> data[linIni+2][colIni+2] = ' ';
 		p -> data[linIni+2][colIni+3] = '\\';
+		insere_fim_lista(tipo + 1,linIni,colIni, 5, 1,l);
 	}
 	else if (tipo == 3)
 	{
@@ -192,11 +182,12 @@ alien *cria_alien(alien *a, placa_a *p, int linIni,int colIni,int linEnd, int co
 		p -> data[linIni+2][colIni+2] = '-';
 		p -> data[linIni+2][colIni+3] = '\\';
 		p -> data[linIni+2][colIni+4] = '_';
-
+		insere_fim_lista(tipo + 1,linIni,colIni, 5, 1,l);
 	}
-	return a;
+	n -> type = tipo + 1;
+	return l;
 }
-void *inicia_canhao(lista *l, mapa *m)
+lista *inicia_canhao(lista *l, mapa *m)
 {
 	int i,k;
 	nodo *canhao;
@@ -224,6 +215,7 @@ void *inicia_canhao(lista *l, mapa *m)
 			m -> data[canhao -> lin + i][canhao -> col + k] = canhao -> data[i][k]; 
 		}
 	}
+	return l;
 }
 void imprime_canhao(nodo *n, mapa *m)
 {

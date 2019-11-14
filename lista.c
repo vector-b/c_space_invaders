@@ -19,11 +19,13 @@ int insere_inicio_lista(int type, int lin, int col, int tam, int state, lista *l
 	nodo -> lin = lin;
 	nodo -> col = col;
 	nodo -> state = state;
+	nodo -> tam = tam;
 	if (l -> begin == NULL)
 	{
 		l -> begin = nodo;
 		nodo -> next = NULL;
 		nodo -> prev = NULL;
+		l -> end  = nodo;
 	}
 	else
 	{
@@ -34,4 +36,29 @@ int insere_inicio_lista(int type, int lin, int col, int tam, int state, lista *l
 	}
 	l -> size++;
 	return 1;	
+}
+int insere_fim_lista(int type, int lin, int col, int tam, int state, lista *l)
+{
+	nodo *n;
+	n = malloc(sizeof(n));
+	n -> type = type;
+	n -> lin = lin;
+	n -> col = col;
+	n -> state = state;
+	n -> tam = tam;
+	if (l -> begin == NULL)
+	{
+		l -> begin = n;
+		n -> next = NULL;
+		n -> prev = NULL;
+	}
+	else
+	{
+		n -> next = NULL;
+		n -> prev = l -> end;
+		l -> end -> next = n;
+		l -> end = n;
+	}
+	l -> size++;
+	return 1;
 }

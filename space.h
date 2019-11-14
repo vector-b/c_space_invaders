@@ -3,7 +3,7 @@
 
 typedef struct nodo 
 {
-    /* 1-canhao 2-alien 3-nave 4-barreira */
+    /* 1-canhao 2-alien  3-alien(2) 4-alien(3) 5-barreira 6-nava mãe */
     int type;
     
     /*posicao do item na tela*/
@@ -18,6 +18,9 @@ typedef struct nodo
 
     /* 1 - vivo  0 - morto */ 
     int state;
+
+    /* Tamanho do objeto em largura */
+    int tam;
 
     /* Ponteiros de proximo e anterior do nodo */
     struct nodo *next;
@@ -43,14 +46,6 @@ typedef struct mapa
     int colunas;
 } mapa;
 
-typedef struct alien
-{
-	int vivo;
-	int tipo; /* 1 -3 */
-	int linIni, colIni;
-	int linEnd, colEnd;
-}alien;
-
 typedef struct placa_alienigiena
 {
 	char **data;
@@ -68,12 +63,14 @@ int inicia_lista(lista *l);
 
 int insere_inicio_lista(int type, int lin, int col, int tam, int state, lista *l);
 
+int insere_fim_lista(int type, int lin, int col, int tam, int state, lista *l);
+
 
 /* Funções do jogo */
 
 mapa *geramapa(mapa *m, int nlin, int ncol);
 
-placa_a *inicializa_placa(mapa *m, placa_a *p, int linIni, int colIni);
+placa_a *inicializa_placa(lista *l,mapa *m, placa_a *p, int linIni, int colIni);
 
 void ande_alien(mapa *m, placa_a *p);
 
@@ -81,9 +78,9 @@ void deletecolumn(mapa *m, placa_a *p, int *right);
 
 void deletetop(mapa *m, placa_a *p);
 
-alien *cria_alien(alien *a, placa_a *p, int linIni,int colIni,int linEnd, int colEnd, int tipo);
+lista *cria_alien(lista *l, placa_a *p, int linIni,int colIni,int linEnd, int colEnd, int tipo);
 
-void *inicia_canhao(lista *l, mapa *m);
+lista *inicia_canhao(lista *l, mapa *m);
 
 void imprime_canhao(nodo *n, mapa *m);
 
