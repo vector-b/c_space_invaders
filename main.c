@@ -5,72 +5,80 @@
 #include "space.h"
 int main()
 {
-	int nlin,ncol;
-	int cont = 0;
-	int right = 1;
-	int changed = 0;
-	int i,j;
+	int lin,col;
+	int i,j,right,changed;
+
+	int ganhou = 1;
 
 	/* Inicialização dos recursos ncurses */
 	initscr();				
 	clear();	
 	refresh();
-	getmaxyx(stdscr, nlin, ncol);
+	getmaxyx(stdscr, lin, col);
 	cbreak();               /* desabilita o buffer de entrada */
     noecho();               /* não mostra os caracteres digitados */
     nodelay(stdscr, TRUE);  /* faz com que getch não aguarde a digitação */
     keypad(stdscr, TRUE);   /* permite a leitura das setas */
     curs_set(FALSE);        /* não mostra o cursor na tela */
 
-	/*Inicia a lista dinamica usada para os objetos do jogo */
-	lista *obj; 
-	obj = malloc(sizeof(obj));
-	if (!inicia_lista(obj))
+
+
+	/* Inicia o mapa */
+	mapa *m;
+	m = malloc(sizeof(m));
+	m = inicia_mapa(m,lin,col);
+
+
+	t_lista *obj;
+	obj  = malloc(sizeof(obj));
+	
+	/* Inicia o canhão */
+	insere_fim_lista(1, (lin - 4), (col/2)-4, 2, 5, 1, obj);
+	inicia_canhao(obj,m);
+
+	/*for (int i = 0; i < 6; i++)
 	{
-		printf("Memória Indisponivel\n");
-		exit(1);
-	}
-    /*Criação e inicialização do mapa */
-	mapa *map;
-	map = malloc(sizeof(map));
-	map = geramapa(map,nlin,ncol);
+		insere_fim_lista(2+i,2,12,3,3,1,obj);
+		insere_fim_lista(9+i,2,12,3,3,1,obj);
+		insere_fim_lista(92+i,2,12,3,3,1,obj);
+	}*/
+	
 
-
-
-
-	/*Criação e inicialização do canhão*/
-	insere_inicio_lista(1,(nlin - 4), (ncol/2)-5,5,1,obj);
-	obj = inicia_canhao(obj,map);
-
-
-	/*Criação e inicialização da placa(que faz a movimentação dos aliens)*/
 	placa_a *placa;
 	placa = malloc(sizeof(placa));
-	placa = inicializa_placa(obj,map,placa, nlin, ncol);
+	placa = inicia_placa(obj,placa, lin, col);
 
-	if (right)
-		deletecolumn(map,placa,&right);
-	while (1/*ganhou, perdeu ou apertou esc*/)
+
+	imprime_lista(obj);
+
+	sleep(2);
+	while (1 && ganhou) /*ganhou, perdeu ou apertou esc*/
 	{
-		if (map -> data[(placa -> linha)+ (placa -> altura)][(placa -> coluna) + (placa -> largura)] == '|')
+
+		if (m -> data[(placa -> linha)+ (placa -> altura)][(placa -> coluna) + (placa -> largura)] == '|')
 		{
 			right = 0;
 			changed = 1;
-			deletetop(map,placa);
-			deletecolumn(map,placa,&right);
+			deletetop(m,placa);
+			deletecolumn(m,placa,&right);
 		}
-		else if (map -> data[(placa -> linha) -1 ][(placa -> coluna) - 1] == '|')
+		else if (m -> data[(placa -> linha) -1 ][(placa -> coluna) - 1] == '|')
 		{
 			right = 1;
 			changed = 1;
-			deletetop(map,placa);
-			deletecolumn(map,placa,&right);
+			deletetop(m,placa);
+			deletecolumn(m,placa,&right);
 		}
-		entra_tiro(map,placa);
 
-		busca_tiro(map);
+		atinge_canhao(obj, placa, m);
+		
+		atinge_alien(obj, placa);
+		
+		entra_tiro(m,placa);
 
-		sai_tiro(map, placa);
+		busca_tiro(m);
+
+		sai_tiro(m, placa);
 
 		busca_tiro_placa(placa,right, &changed);
 
@@ -80,19 +88,23 @@ int main()
 
 		clear();
 
+		/* Empurra a placa pro lado */
 		if (right)
 			placa -> coluna++;
 		else
 			placa -> coluna--;
 
-		ande_alien(map,placa);
-		
-		if (right)
-			deletecolumn(map,placa,&right);
-		else
-			deletecolumn(map,placa,&right);
+		/* Atualiz a placa no mapa */
+		transicao(m,placa);
 
-		switch(getch()) {
+		/* Apaga a parte da placa que ficou pra tras */ 
+		if (right)
+			deletecolumn(m,placa,&right);
+		else
+			deletecolumn(m,placa,&right);
+
+		switch(getch()) 
+		{
     		case 'd':
     		{
     			obj -> begin -> col++;
@@ -105,23 +117,34 @@ int main()
     		}
     		case 'p':
     		{
-    			atirar(obj -> begin,map);
+    			atirar(obj -> begin,m);
         		break;
     		}
 
 		}	
-		
-		imprime_canhao(obj -> begin ,map);
-		for (i = 0; i <  (map -> linhas); i++)
+
+		imprime_canhao(obj -> begin ,m);
+
+
+		/* Printa o mapa e tudo o que estiver dentro */
+		for (i = 0; i < (m -> linhas); i++)
 		{
-			for (j = 0; j < (map -> colunas); j++)
-				printw("%c", map -> data[i][j]);
+			for (j = 0; j < (m -> colunas); j++)
+				printw("%c", m -> data[i][j]);
 			printw("\n");
 		}
-		cont++;
 	}
 
+	/* Desaloca o que for necessário */
+	free(m);
+	free(obj);
+	free(placa);
+	/*Desalocar placa*/
+	/*Desalocar mapa*/
+
+	/* Finaliza as alterações do ncurses */
 	getch();
  	endwin();
+	return 0;
 	return 0;
 }

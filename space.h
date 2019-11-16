@@ -1,43 +1,23 @@
-#ifndef __SPACE__
-#define __SPACE__
-
-typedef struct nodo 
-{
-    /* 1-canhao 2-alien  3-alien(2) 4-alien(3) 5-barreira 6-nava mãe */
+struct t_nodo {
     int type;
-    
-    /*posicao do item na tela*/
     int lin;
     int col;
-    
-    /* Conteúdo do nodo */
     char **data;
-
-    /*velocidade de movimentão do item*/
     int vel;
-
-    /* 1 - vivo  0 - morto */ 
     int state;
+    int alt;
+    int larg;
+    struct t_nodo *next;
+    struct t_nodo *prev;
+};
+typedef struct t_nodo t_nodo;
 
-    /* Tamanho do objeto em largura */
-    int tam;
-
-    /* Ponteiros de proximo e anterior do nodo */
-    struct nodo *next;
-    struct nodo *prev;
-}nodo;
-
-typedef struct lista 
-{
-    nodo *begin;
-    nodo *go;
-    nodo *end;
+struct t_lista {
+    t_nodo *begin;
+    t_nodo *end;
     int size;
-}lista;
-
-
-
-
+};
+typedef struct t_lista t_lista;
 
 typedef struct mapa
 {   
@@ -48,43 +28,36 @@ typedef struct mapa
 
 typedef struct placa_alienigiena
 {
-	char **data;
-	int linha;
-	int coluna;
-	int altura;
-	int largura;
-	int numero_aliens;
+    char **data;
+    int linha;
+    int coluna;
+    int altura;
+    int largura;
+    int numero_aliens;
 
 }placa_a;
 
-/*Funções de manipulação de lista */
+int cria_lista(t_lista *l);
+int lista_vazia(t_lista *l);
+void destroi_lista(t_lista *l);
+int insere_fim_lista(int type, int lin, int col, int al, int la, int state, t_lista *l);
+void imprime_lista(t_lista *l);
 
-int inicia_lista(lista *l);
+placa_a *inicia_placa(t_lista *l,placa_a *p, int lin, int col);
 
-int insere_inicio_lista(int type, int lin, int col, int tam, int state, lista *l);
+mapa *inicia_mapa(mapa *m, int lin, int col);
 
-int insere_fim_lista(int type, int lin, int col, int tam, int state, lista *l);
+void *inicia_canhao(t_lista *l, mapa *m);
 
+void gera_alien(t_lista *l,placa_a *p, int linIni,int colIni, int tipo);
 
-/* Funções do jogo */
-
-mapa *geramapa(mapa *m, int nlin, int ncol);
-
-placa_a *inicializa_placa(lista *l,mapa *m, placa_a *p, int linIni, int colIni);
-
-void ande_alien(mapa *m, placa_a *p);
+void transicao(mapa *m, placa_a *p);
 
 void deletecolumn(mapa *m, placa_a *p, int *right);
 
 void deletetop(mapa *m, placa_a *p);
 
-lista *cria_alien(lista *l, placa_a *p, int linIni,int colIni,int tipo);
-
-lista *inicia_canhao(lista *l, mapa *m);
-
-void imprime_canhao(nodo *n, mapa *m);
-
-void atirar(nodo *n,mapa *m);
+void atirar(t_nodo *n, mapa *m);
 
 void busca_tiro(mapa *m);
 
@@ -93,4 +66,16 @@ void entra_tiro(mapa *m, placa_a *p);
 void busca_tiro_placa(placa_a *p, int dir, int *changed);
 
 void sai_tiro(mapa *m, placa_a *p);
-#endif
+
+void imprime_canhao(t_nodo *n, mapa *m);
+
+void atinge_alien(t_lista *l, placa_a *p);
+
+void busca_e_remove(t_lista *l, placa_a *p);
+
+/*int insere_fim_lista(int x, t_lista *l);
+int insere_ordenado_lista(int x, t_lista *l);
+
+int remove_primeiro_lista(int *item, t_lista *l);
+int remove_ultimo_lista(int *item, t_lista *l);
+int remove_item_lista(int chave, int *item, t_*/
