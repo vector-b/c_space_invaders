@@ -70,24 +70,13 @@ placa_a *inicializa_placa(lista *l,mapa *m, placa_a *p, int linIni, int colIni)
 		}
 	}
 
-	for (i = 1; i < p -> largura - 5 ; i+= 7)
+	for (i = 2; i < p -> largura - 10 ; i+= 10)
 	{
-		cria_alien(l,p,1,i,4,i+2,1);
+		l = cria_alien(l,p,4,i,1);
 	}
-
-	for (i = 1; i < p -> largura - 6 ; i+= 9)
+	for (i = 1; i < p -> largura - 15 ; i+= 15)
 	{
-		cria_alien(l,p,6,i,9,i+4,2);
-	}
-
-	for (i = 1; i < p -> largura - 6 ; i+= 9)
-	{
-		cria_alien(l,p,11,i,14,i+4,2);
-	}
-
-	for (i = 1; i < p -> largura - 6 ; i+= 9)
-	{
-		cria_alien(l,p,16,i,19,i+4,3);
+		l = cria_alien(l,p,8,i,2);
 	}
 	return p;
 }
@@ -132,11 +121,8 @@ void deletetop(mapa *m, placa_a *p)
 		m -> data[p -> linha - 1][p -> coluna + i] = ' ';
 	
 }
-	
-
-lista *cria_alien(lista *l,placa_a *p, int linIni,int colIni,int linEnd, int colEnd, int tipo)
+lista *cria_alien(lista *l,placa_a *p, int linIni,int colIni, int tipo)
 {
-	nodo *n;
 	if (tipo == 1)
 	{
 		p -> data[linIni][colIni+1] = 'A';
@@ -163,7 +149,7 @@ lista *cria_alien(lista *l,placa_a *p, int linIni,int colIni,int linEnd, int col
 		p -> data[linIni+2][colIni+1] = '/';
 		p -> data[linIni+2][colIni+2] = ' ';
 		p -> data[linIni+2][colIni+3] = '\\';
-		insere_fim_lista(tipo + 1,linIni,colIni, 5, 1,l);
+		/*insere_fim_lista(tipo + 1,linIni,colIni, 5, 1,l);*/
 	}
 	else if (tipo == 3)
 	{
@@ -182,9 +168,8 @@ lista *cria_alien(lista *l,placa_a *p, int linIni,int colIni,int linEnd, int col
 		p -> data[linIni+2][colIni+2] = '-';
 		p -> data[linIni+2][colIni+3] = '\\';
 		p -> data[linIni+2][colIni+4] = '_';
-		insere_fim_lista(tipo + 1,linIni,colIni, 5, 1,l);
+		/*insere_fim_lista(tipo + 1,linIni,colIni, 5, 1,l);*/
 	}
-	n -> type = tipo + 1;
 	return l;
 }
 lista *inicia_canhao(lista *l, mapa *m)

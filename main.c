@@ -35,15 +35,18 @@ int main()
 	map = malloc(sizeof(map));
 	map = geramapa(map,nlin,ncol);
 
-	/*Criação e inicialização da placa(que faz a movimentação dos aliens)*/
-	placa_a *placa;
-	placa = malloc(sizeof(placa));
-	placa = inicializa_placa(obj,map,placa, nlin, ncol);
+
 
 
 	/*Criação e inicialização do canhão*/
 	insere_inicio_lista(1,(nlin - 4), (ncol/2)-5,5,1,obj);
 	obj = inicia_canhao(obj,map);
+
+
+	/*Criação e inicialização da placa(que faz a movimentação dos aliens)*/
+	placa_a *placa;
+	placa = malloc(sizeof(placa));
+	placa = inicializa_placa(obj,map,placa, nlin, ncol);
 
 	if (right)
 		deletecolumn(map,placa,&right);
@@ -73,9 +76,10 @@ int main()
 
 		refresh();
 
-		usleep(100000);
+		usleep(50000);
 
 		clear();
+
 		if (right)
 			placa -> coluna++;
 		else
@@ -87,6 +91,7 @@ int main()
 			deletecolumn(map,placa,&right);
 		else
 			deletecolumn(map,placa,&right);
+
 		switch(getch()) {
     		case 'd':
     		{
@@ -105,6 +110,7 @@ int main()
     		}
 
 		}	
+		
 		imprime_canhao(obj -> begin ,map);
 		for (i = 0; i <  (map -> linhas); i++)
 		{

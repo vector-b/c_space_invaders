@@ -78,7 +78,7 @@ void deletecolumn(mapa *m, placa_a *p, int *right);
 
 void deletetop(mapa *m, placa_a *p);
 
-lista *cria_alien(lista *l, placa_a *p, int linIni,int colIni,int linEnd, int colEnd, int tipo);
+lista *cria_alien(lista *l, placa_a *p, int linIni,int colIni,int tipo);
 
 lista *inicia_canhao(lista *l, mapa *m);
 
