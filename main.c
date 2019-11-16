@@ -70,7 +70,10 @@ int main()
 			deletecolumn(m,placa,&right);
 		}
 
-		atinge_canhao(obj, placa, m);
+		if (atinge_canhao(obj, placa, m))
+			ganhou = 0;
+		
+		limpa_topo(m);
 		
 		atinge_alien(obj, placa);
 		
@@ -135,6 +138,7 @@ int main()
 		}
 	}
 
+
 	/* Desaloca o que for necessário */
 	free(m);
 	free(obj);
@@ -145,6 +149,9 @@ int main()
 	/* Finaliza as alterações do ncurses */
 	getch();
  	endwin();
-	return 0;
+	if (!ganhou)
+	{
+		printf("YOU LOSE MOTHERFUCKER\n");
+	}
 	return 0;
 }

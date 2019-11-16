@@ -73,6 +73,9 @@ void atinge_alien(t_lista *l, placa_a *p);
 
 void busca_e_remove(t_lista *l, placa_a *p);
 
+int atinge_canhao(t_lista *l, placa_a *p , mapa *m);
+
+void limpa_topo(mapa *m);
 /*int insere_fim_lista(int x, t_lista *l);
 int insere_ordenado_lista(int x, t_lista *l);
 

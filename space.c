@@ -47,13 +47,13 @@ placa_a *inicia_placa(t_lista *l,placa_a *p, int lin, int col)
 
 	for (i = 0; i < p -> altura; i++)
 	{
-		p -> data[i][0] = '*';
-		p -> data[i][p -> largura - 1] = '*';
+		p -> data[i][0] = ' ';
+		p -> data[i][p -> largura - 1] = ' ';
 	}
 	for (i = 0; i < p -> largura; i++)
 	{
-		p -> data[0][i] = '*';
-		p -> data[p -> altura - 1][i] = '*';
+		p -> data[0][i] = ' ';
+		p -> data[p -> altura - 1][i] = ' ';
 	}
 	for (i = 1; i < p -> altura-1; i++)
 	{
@@ -239,9 +239,9 @@ void sai_tiro(mapa *m, placa_a *p)
 void busca_tiro_placa(placa_a *p, int dir, int *changed)
 {
 	int i,k;
-	for (i = 1; i <  p -> altura ; i++)
+	for (i = 0; i <  p -> altura ; i++)
 	{
-		for (k = 1; k < p ->  largura; k++)
+		for (k = 0; k < p ->  largura; k++)
 		{
 			if (p -> data[i][k] == '|')
 			{
@@ -303,7 +303,6 @@ void atinge_alien(t_lista *l, placa_a *p)
 					n -> state = 0;
 					p -> data[n -> lin + n -> alt - 1 ][i] = ' ';
 					busca_e_remove(l,p);
-					printf("aaa\n");
 				}
 			}
 		}
@@ -332,5 +331,20 @@ void busca_e_remove(t_lista *l, placa_a *p)
 			//remove_nodo(tal)
 		}
 		n = n -> next;
+	}
+}
+int atinge_canhao(t_lista *l, placa_a *p , mapa *m)
+{
+	
+	if ((p -> linha +  p -> altura - 1) == m -> linhas - 4 )
+		return 1;
+	return 0;
+}
+void limpa_topo(mapa *m)
+{
+	int i;
+	for (i = 1; i < m -> colunas; i++)
+	{
+		m -> data[1][i] = ' ';
 	}
 }
