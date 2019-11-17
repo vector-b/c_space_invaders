@@ -107,11 +107,27 @@ void *inicia_canhao(t_lista *l, mapa *m)
 		}
 	}
 }
+void surge_nave(t_lista *l, mapa *m)
+{
+	int i,k;
+	t_nodo *aux;
+	aux = l -> end;
+	for (i = 0 ; i < aux -> alt; i++)
+	{
+		for (k = 0 ; k <  aux -> larg ; k++)
+		{
+			m -> data[aux -> lin + i][aux -> col + k] = aux -> data[i][k];
+		}
+	}
 
+	m -> data[aux -> lin + 1][aux -> col - 1 ] = ' ';
+}
 void inicia_nave(t_lista *l)
 {
 	t_nodo *aux;
 	aux = l -> end;
+	aux -> lin = 2;
+	aux -> col = 2;
 	aux -> data = malloc(3*sizeof(aux -> data));
 	for (int i = 0; i < 3; i++)
 	{

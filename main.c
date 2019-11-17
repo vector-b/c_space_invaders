@@ -23,7 +23,7 @@ int main()
 
 
 
-	int contador = 0;
+	int contador = 1;
 	/* Inicia o mapa */
 	mapa *m;
 	m = malloc(sizeof(m));
@@ -43,7 +43,7 @@ int main()
 		insere_fim_lista(9+i,2,12,3,3,1,obj);
 		insere_fim_lista(92+i,2,12,3,3,1,obj);
 	}*/
-	
+	int mae = 0;
 
 	placa_a *placa;
 	placa = malloc(sizeof(placa));
@@ -81,9 +81,16 @@ int main()
 		
 		limpa_topo(m);
 		
-		if (contador % 30  == 0)
+		if (mae)
 		{
-			//surge_nave();
+			t_nodo *aux;
+			aux = obj -> end;
+			aux -> col++;
+		}
+		if (contador % 120  == 0)
+		{
+			surge_nave(obj,m);
+			mae = 1;
 		}
 		atinge_alien(obj, placa);
 		
@@ -146,7 +153,8 @@ int main()
 				printw("%c", m -> data[i][j]);
 			printw("\n");
 		}
-		contador++;
+		if (!mae)
+			contador++;
 	}
 
 
