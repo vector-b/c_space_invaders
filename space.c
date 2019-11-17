@@ -112,7 +112,39 @@ void inicia_nave(t_lista *l)
 {
 	t_nodo *aux;
 	aux = l -> end;
-
+	aux -> data = malloc(3*sizeof(aux -> data));
+	for (int i = 0; i < 3; i++)
+	{
+		aux -> data[i] = malloc(9*sizeof(aux -> data));
+	}
+	aux -> data[0][0] = ' ';
+	aux -> data[0][1] = '/';
+	aux -> data[0][2] = 'M';
+	aux -> data[0][3] = 'M';
+	aux -> data[0][4] = 'M';
+	aux -> data[0][5] = 'M';
+	aux -> data[0][6] = 'M';
+	aux -> data[0][7] = '\\';
+	aux -> data[0][8] = ' ';
+	aux -> data[1][0] = 'A';
+	aux -> data[1][1] = 'M';
+	aux -> data[1][2] = 'o';
+	aux -> data[1][3] = 'M';
+	aux -> data[1][4] = 'o';
+	aux -> data[1][5] = 'M';
+	aux -> data[1][6] = 'o';
+	aux -> data[1][7] = 'M';
+	aux -> data[1][8] = 'A';
+	aux -> data[2][0] = ' ';
+	aux -> data[2][1] = '\\';
+	aux -> data[2][2] = '/';
+	aux -> data[2][3] = '\'';
+	aux -> data[2][4] = '-';
+	aux -> data[2][5] = '\'';
+	aux -> data[2][6] = '\\';
+	aux -> data[2][7] = '/';
+	aux -> data[2][8] = ' ';
+	
 }
 void gera_alien(t_lista *l,placa_a *p, int linIni,int colIni, int tipo)
 {
