@@ -73,6 +73,22 @@ void imprime_lista(t_lista *l)
  		aux = aux -> next;
  	}
 }
+
+int remove_nodo(t_lista *l, t_nodo *n)
+{
+	t_nodo *aux;
+	if (n -> next != NULL)
+	{
+		n -> prev -> next = n -> next;
+		n -> next -> prev = n -> prev;
+		/*free(n);*/	
+	}
+	else
+	{
+		n -> prev -> next = NULL;
+	}
+	l -> size--;
+}
 /*Insere no no final da lista*/
 /*int insere_fim_lista(int x, t_lista *l)
 {

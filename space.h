@@ -1,4 +1,5 @@
 struct t_nodo {
+    /* 1-canhao 2-alien  3-alien(2) 4-alien(3) 5-barreira 6-nave mãe  */
     int type;
     int lin;
     int col;
@@ -42,12 +43,15 @@ int lista_vazia(t_lista *l);
 void destroi_lista(t_lista *l);
 int insere_fim_lista(int type, int lin, int col, int al, int la, int state, t_lista *l);
 void imprime_lista(t_lista *l);
+int remove_nodo(t_lista *l, t_nodo *n);
 
 placa_a *inicia_placa(t_lista *l,placa_a *p, int lin, int col);
 
 mapa *inicia_mapa(mapa *m, int lin, int col);
 
 void *inicia_canhao(t_lista *l, mapa *m);
+
+void inicia_nave(t_lista *l);
 
 void gera_alien(t_lista *l,placa_a *p, int linIni,int colIni, int tipo);
 

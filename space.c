@@ -33,11 +33,12 @@ mapa *inicia_mapa(mapa *m, int lin, int col)
 
 placa_a *inicia_placa(t_lista *l,placa_a *p, int lin, int col)
 {
-	p = malloc(sizeof(p));
+	p = malloc(86*sizeof(p));
 	p -> linha = 6;
 	p -> coluna = 4;
-	p -> altura = lin*0.40;
+	p -> altura = lin*0.30;
 	p -> largura = col*0.40;
+	p -> numero_aliens = 0;
 	int i,k;
 	p -> data = malloc(p -> altura * sizeof(p -> data));
 	for (i = 0; i < p -> altura; i++)
@@ -52,8 +53,8 @@ placa_a *inicia_placa(t_lista *l,placa_a *p, int lin, int col)
 	}
 	for (i = 0; i < p -> largura; i++)
 	{
-		p -> data[0][i] = ' ';
-		p -> data[p -> altura - 1][i] = ' ';
+		p -> data[0][i] = '-';
+		p -> data[p -> altura - 1][i] = '-';
 	}
 	for (i = 1; i < p -> altura-1; i++)
 	{
@@ -66,11 +67,13 @@ placa_a *inicia_placa(t_lista *l,placa_a *p, int lin, int col)
 	for (i = 2; i < p -> largura - 3; i+= 12)
 	{
 		gera_alien(l,p,1,i,1);
+		p -> numero_aliens++;
 	}
 		
 	for (i = 1; i < p -> largura - 5 ; i+= 15)
 	{
 		gera_alien(l,p,6,i,2);
+		p -> numero_aliens++;
 	}
 	return p;
 }
@@ -103,6 +106,13 @@ void *inicia_canhao(t_lista *l, mapa *m)
 			m -> data[canhao -> lin + i][canhao -> col + k] = canhao -> data[i][k]; 
 		}
 	}
+}
+
+void inicia_nave(t_lista *l)
+{
+	t_nodo *aux;
+	aux = l -> end;
+
 }
 void gera_alien(t_lista *l,placa_a *p, int linIni,int colIni, int tipo)
 {
@@ -298,10 +308,10 @@ void atinge_alien(t_lista *l, placa_a *p)
 		{
 			for (i = n -> col; i < n -> col + n -> larg - 1; i++)
 			{
-				if (p -> data[n -> lin + n -> alt - 1 ][i] == '|')
+				if (p -> data[n -> lin + n -> alt - 2 ][i] == '|')
 				{ 
 					n -> state = 0;
-					p -> data[n -> lin + n -> alt - 1 ][i] = ' ';
+					p -> data[n -> lin + n -> alt - 2 ][i] = ' ';
 					busca_e_remove(l,p);
 				}
 			}
@@ -312,7 +322,9 @@ void atinge_alien(t_lista *l, placa_a *p)
 void busca_e_remove(t_lista *l, placa_a *p)
 {
 	t_nodo *n;
+	t_nodo *aux;
 	int i,k;
+	int val = 0;
 	n = l -> begin;
 	while (n != NULL)
 	{
@@ -327,10 +339,18 @@ void busca_e_remove(t_lista *l, placa_a *p)
 						p -> data[i][k] = ' ';
 					}
 				}
+				val = 1;
+				aux = n -> next;
+				remove_nodo(l,n);
+				n = aux;
+				p -> numero_aliens--;
 			}
-			//remove_nodo(tal)
+			
 		}
-		n = n -> next;
+		if (!val)
+			n = n -> next;
+		else
+			val = 0;
 	}
 }
 int atinge_canhao(t_lista *l, placa_a *p , mapa *m)

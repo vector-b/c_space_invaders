@@ -23,6 +23,7 @@ int main()
 
 
 
+	int contador = 0;
 	/* Inicia o mapa */
 	mapa *m;
 	m = malloc(sizeof(m));
@@ -48,13 +49,18 @@ int main()
 	placa = malloc(sizeof(placa));
 	placa = inicia_placa(obj,placa, lin, col);
 
+	/* Inicia Nave Mãe */
+	insere_fim_lista(4, 0, 0, 3, 9, 1, obj);
+	inicia_nave(obj);
 
 	imprime_lista(obj);
 
 	sleep(2);
-	while (1 && ganhou) /*ganhou, perdeu ou apertou esc*/
+	while (ganhou) /*ganhou, perdeu ou apertou esc*/
 	{
 
+		if (placa -> numero_aliens == 0)
+			break;
 		if (m -> data[(placa -> linha)+ (placa -> altura)][(placa -> coluna) + (placa -> largura)] == '|')
 		{
 			right = 0;
@@ -75,6 +81,10 @@ int main()
 		
 		limpa_topo(m);
 		
+		if (contador % 30  == 0)
+		{
+			//surge_nave();
+		}
 		atinge_alien(obj, placa);
 		
 		entra_tiro(m,placa);
@@ -136,6 +146,7 @@ int main()
 				printw("%c", m -> data[i][j]);
 			printw("\n");
 		}
+		contador++;
 	}
 
 
@@ -153,5 +164,7 @@ int main()
 	{
 		printf("YOU LOSE MOTHERFUCKER\n");
 	}
+	else
+		printf("GANHOU FDP\n");
 	return 0;
 }
