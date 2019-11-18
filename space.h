@@ -79,6 +79,10 @@ void busca_e_remove(t_lista *l, placa_a *p);
 
 void surge_nave(t_lista *l, mapa *m);
 
+void inicia_barreira(t_lista *l);
+
+void imprime_barreiras(mapa *m,t_nodo *n);
+
 int atinge_canhao(t_lista *l, placa_a *p , mapa *m);
 
 void limpa_topo(mapa *m);

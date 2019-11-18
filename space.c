@@ -36,7 +36,7 @@ placa_a *inicia_placa(t_lista *l,placa_a *p, int lin, int col)
 	p = malloc(86*sizeof(p));
 	p -> linha = 6;
 	p -> coluna = 4;
-	p -> altura = lin*0.30;
+	p -> altura = lin*0.43;
 	p -> largura = col*0.40;
 	p -> numero_aliens = 0;
 	int i,k;
@@ -64,15 +64,28 @@ placa_a *inicia_placa(t_lista *l,placa_a *p, int lin, int col)
 		}
 	}
 
-	for (i = 2; i < p -> largura - 3; i+= 12)
+	for (i = 2; i < p -> largura - 3; i+= 5)
 	{
 		gera_alien(l,p,1,i,1);
 		p -> numero_aliens++;
 	}
 		
-	for (i = 1; i < p -> largura - 5 ; i+= 15)
+	for (i = 1; i < p -> largura - 5 ; i+= 7)
 	{
 		gera_alien(l,p,6,i,2);
+		p -> numero_aliens++;
+	}
+
+
+	for (i = 1; i < p -> largura - 5 ; i+= 7)
+	{
+		gera_alien(l,p,12,i,3);
+		p -> numero_aliens++;
+	}
+
+	for (i = 1; i < p -> largura - 5 ; i+= 7)
+	{
+		gera_alien(l,p,18,i,3);
 		p -> numero_aliens++;
 	}
 	return p;
@@ -161,6 +174,48 @@ void inicia_nave(t_lista *l)
 	aux -> data[2][7] = '/';
 	aux -> data[2][8] = ' ';
 	
+}
+void inicia_barreira(t_lista *l)
+{
+	t_nodo *aux;
+	aux = l -> end;
+	aux -> data = malloc(3*sizeof(aux -> data));
+	for (int i = 0; i < 3; i++)
+	{
+		aux -> data[i] = malloc(7*sizeof(aux -> data));
+	}
+	aux -> data[0][0] = 'A';
+	aux -> data[0][1] = 'M';
+	aux -> data[0][2] = 'M';
+	aux -> data[0][3] = 'M';
+	aux -> data[0][4] = 'M';
+	aux -> data[0][5] = 'M';
+	aux -> data[0][6] = 'A';
+	aux -> data[1][0] = 'M';
+	aux -> data[1][1] = 'M';
+	aux -> data[1][2] = 'M';
+	aux -> data[1][3] = 'M';
+	aux -> data[1][4] = 'M';
+	aux -> data[1][5] = 'M';
+	aux -> data[1][6] = 'M';
+	aux -> data[2][0] = 'M';
+	aux -> data[2][1] = 'M';
+	aux -> data[2][2] = 'M';
+	aux -> data[2][3] = 'M';
+	aux -> data[2][4] = 'M';
+	aux -> data[2][5] = 'M';
+	aux -> data[2][6] = 'M';
+}
+void imprime_barreiras(mapa *m,t_nodo *n)
+{
+	int i,k;
+	for (i = 0; i < n -> alt; i++)
+	{	
+		for (k = 0; k < n -> larg; k++)
+		{
+			m -> data[n -> lin + i][n -> col + k] = n -> data[i][k];
+		}
+	}	
 }
 void gera_alien(t_lista *l,placa_a *p, int linIni,int colIni, int tipo)
 {
@@ -255,7 +310,7 @@ void deletetop(mapa *m, placa_a *p)
 }
 void atirar(t_nodo *n,mapa *m)
 {
-	m -> data[ n -> lin -1][n -> col+2] = '|';
+	m -> data[n -> lin -1][n -> col+2] = 'o';
 }
 void busca_tiro(mapa *m)
 {
@@ -264,9 +319,9 @@ void busca_tiro(mapa *m)
 	{
 		for (k = 2; k < m -> colunas - 2; k++)
 		{
-			if (m -> data[i][k] == '|')
+			if (m -> data[i][k] == 'o')
 			{
-				m -> data[i-1][k] = '|';
+				m -> data[i-1][k] = 'o';
 				m -> data[i][k] = ' ';
 			}
 		}
@@ -277,8 +332,8 @@ void entra_tiro(mapa *m, placa_a *p)
 	int i;
 	for (i = 0; i < p -> largura; i++)
 	{
-		if (m -> data[p -> linha + p -> altura][p -> coluna + i] == '|')
-			p -> data[p->altura-1][i] = '|';
+		if (m -> data[p -> linha + p -> altura][p -> coluna + i] == 'o')
+			p -> data[p->altura-1][i] = 'o';
 	}
 }
 void sai_tiro(mapa *m, placa_a *p)
@@ -286,9 +341,9 @@ void sai_tiro(mapa *m, placa_a *p)
 	int i;
 	for (i = 0; i < p -> largura; i++)
 	{
-		if (p -> data[0][i] == '|')
+		if (p -> data[0][i] == 'o')
 		{
-			m -> data[p -> linha - 1][p -> coluna + i ] = '|';
+			m -> data[p -> linha - 1][p -> coluna + i ] = 'o';
 			p -> data[0][i] = ' ';
 		}
 
@@ -301,23 +356,23 @@ void busca_tiro_placa(placa_a *p, int dir, int *changed)
 	{
 		for (k = 0; k < p ->  largura; k++)
 		{
-			if (p -> data[i][k] == '|')
+			if (p -> data[i][k] == 'o')
 			{
 				if (*changed == 0)
 				{
 					if (dir)
-						p -> data[i-1][k-1] = '|';
+						p -> data[i-1][k-1] = 'o';
 					else
-						p -> data[i-1][k+1] = '|';
+						p -> data[i-1][k+1] = 'o';
 					p -> data[i][k] = ' ';
 
 				}	
 				else
 				{
 					if (dir)
-						p -> data[i-1][k+1] = '|';
+						p -> data[i-1][k+1] = 'o';
 					else
-						p -> data[i-1][k-1] = '|';
+						p -> data[i-1][k-1] = 'o';
 					p -> data[i][k] = ' ';
 					*changed = 0;
 				}
@@ -352,11 +407,11 @@ void atinge_alien(t_lista *l, placa_a *p)
 	n = l -> begin;
 	while (n != NULL)
 	{
-		if (n -> type >= 2 && n -> type <= 3)
+		if (n -> type >= 2 && n -> type <= 4)
 		{
 			for (i = n -> col; i < n -> col + n -> larg - 1; i++)
 			{
-				if (p -> data[n -> lin + n -> alt - 2 ][i] == '|')
+				if (p -> data[n -> lin + n -> alt - 2 ][i] == 'o')
 				{ 
 					n -> state = 0;
 					p -> data[n -> lin + n -> alt - 2 ][i] = ' ';
@@ -376,7 +431,7 @@ void busca_e_remove(t_lista *l, placa_a *p)
 	n = l -> begin;
 	while (n != NULL)
 	{
-		if (n -> type >= 2 && n -> type <= 3)
+		if (n -> type >= 2 && n -> type <= 4)
 		{
 			if (n -> state == 0)
 			{

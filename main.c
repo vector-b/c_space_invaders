@@ -7,7 +7,6 @@ int main()
 {
 	int lin,col;
 	int i,j,right,changed;
-
 	int ganhou = 1;
 
 	/* Inicialização dos recursos ncurses */
@@ -49,9 +48,26 @@ int main()
 	placa = malloc(sizeof(placa));
 	placa = inicia_placa(obj,placa, lin, col);
 
+	/* Inicia barreiras */
+	insere_fim_lista(5, lin-9, 5, 3, 7, 1, obj);
+	inicia_barreira(obj);
+	imprime_barreiras(m,obj -> end);
+
+	insere_fim_lista(5, lin-9, 40, 3, 7, 1, obj);
+	inicia_barreira(obj);
+	imprime_barreiras(m,obj -> end);
+
+	insere_fim_lista(5, lin-9, 75, 3, 7, 1, obj);
+	inicia_barreira(obj);
+	imprime_barreiras(m,obj -> end);
+
+	insere_fim_lista(5, lin-9, 110, 3, 7, 1, obj);
+	inicia_barreira(obj);
+	imprime_barreiras(m,obj -> end);
 	/* Inicia Nave Mãe */
-	insere_fim_lista(4, 0, 0, 3, 9, 1, obj);
+	insere_fim_lista(6, 0, 0, 3, 9, 1, obj);
 	inicia_nave(obj);
+
 
 	imprime_lista(obj);
 
@@ -104,7 +120,7 @@ int main()
 
 		refresh();
 
-		usleep(50000);
+		usleep(60000);
 
 		clear();
 
