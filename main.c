@@ -79,11 +79,12 @@ int main()
 	{
 
 		srand(time(NULL));
-		int r = rand() % 4;
-		if (r == 3)
+		int r = rand() % 2;
+		if (r == 1)
 		{
 			alien_atira(obj, placa);
 		}
+		
 		if (placa -> numero_aliens == 0)
 			break;
 		if (m -> data[(placa -> linha)+ (placa -> altura)][(placa -> coluna) + (placa -> largura)] == '|')

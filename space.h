@@ -74,6 +74,7 @@ void tiros(t_lista *l,placa_a *p, mapa *m, int right, int *changed);
 
 void entra_tiro(mapa *m, placa_a *p);
 
+
 void busca_tiro_placa(placa_a *p, int dir, int *changed);
 
 void sai_tiro(mapa *m, placa_a *p);
