@@ -324,9 +324,9 @@ void transicao(mapa *m, placa_a *p)
 		}
 	}
 }
-void tiros(t_lista *l,placa_a *p, mapa *m, int right, int *changed)
+void tiros(t_lista *l,placa_a *p, mapa *m, int right, int *changed, int *score)
 {
-	atinge_alien(l, p);
+	atinge_alien(l, p, score);
 		
 	entra_tiro(m,p);
 
@@ -491,7 +491,7 @@ void imprime_canhao(t_nodo *n, mapa *m)
 		}
 	}	
 }
-void atinge_alien(t_lista *l, placa_a *p)
+void atinge_alien(t_lista *l, placa_a *p, int *score)
 {
 	int i;
 	t_nodo *n;
@@ -507,6 +507,18 @@ void atinge_alien(t_lista *l, placa_a *p)
 					n -> state = 0;
 					p -> data[n -> lin + n -> alt - 2 ][i] = ' ';
 					busca_e_remove(l,p);
+					if (n -> type == 2)
+					{
+						*score+=25;
+					}
+					else if (n -> type == 3)
+					{
+						*score+=15;
+					}
+					else
+					{
+						*score+=5;
+					}
 				}
 			}
 		}

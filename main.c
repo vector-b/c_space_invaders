@@ -7,7 +7,7 @@
 int main()
 {
 	int lin,col;
-	int pontucao;
+	int score = 0;
 	int i,j,right,changed;
 	int ganhou = 1;
 
@@ -125,7 +125,7 @@ int main()
 			mae = 1;
 		}
 
-		tiros(obj,placa, m, right, &changed);
+		tiros(obj,placa, m, right, &changed, &score);
 
 		chocou(placa,obj,m);
 		
@@ -172,7 +172,8 @@ int main()
 
 		imprime_canhao(obj -> begin ,m);
 
-
+		move(0,175);
+		printw("SCORE: %d\n",score );
 		/* Printa o mapa e tudo o que estiver dentro */
 		for (i = 0; i < (m -> linhas); i++)
 		{
