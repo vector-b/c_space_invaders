@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <ncurses.h>
+#include <time.h>
 #include "space.h"
 int main()
 {
@@ -48,22 +49,24 @@ int main()
 	placa = malloc(sizeof(placa));
 	placa = inicia_placa(obj,placa, lin, col);
 
+	int pos = 20;
 	/* Inicia barreiras */
-	insere_fim_lista(5, lin-9, 5, 3, 7, 1, obj);
+	insere_fim_lista(5, lin-9, pos, 3, 7, 1, obj);
 	inicia_barreira(obj);
 	imprime_barreiras(m,obj -> end);
 
-	insere_fim_lista(5, lin-9, 40, 3, 7, 1, obj);
+	insere_fim_lista(5, lin-9, pos+=35, 3, 7, 1, obj);
 	inicia_barreira(obj);
 	imprime_barreiras(m,obj -> end);
 
-	insere_fim_lista(5, lin-9, 75, 3, 7, 1, obj);
+	insere_fim_lista(5, lin-9, pos+=35, 3, 7, 1, obj);
 	inicia_barreira(obj);
 	imprime_barreiras(m,obj -> end);
 
-	insere_fim_lista(5, lin-9, 110, 3, 7, 1, obj);
+	insere_fim_lista(5, lin-9, pos+=35, 3, 7, 1, obj);
 	inicia_barreira(obj);
 	imprime_barreiras(m,obj -> end);
+	
 	/* Inicia Nave Mãe */
 	insere_fim_lista(6, 0, 0, 3, 9, 1, obj);
 	inicia_nave(obj);
@@ -75,6 +78,12 @@ int main()
 	while (ganhou) /*ganhou, perdeu ou apertou esc*/
 	{
 
+		srand(time(NULL));
+		int r = rand() % 4;
+		if (r == 3)
+		{
+			alien_atira(obj, placa);
+		}
 		if (placa -> numero_aliens == 0)
 			break;
 		if (m -> data[(placa -> linha)+ (placa -> altura)][(placa -> coluna) + (placa -> largura)] == '|')
@@ -108,16 +117,11 @@ int main()
 			surge_nave(obj,m);
 			mae = 1;
 		}
-		atinge_alien(obj, placa);
+
+		tiros(obj,placa, m, right, &changed);
+
+		chocou(placa,obj,m);
 		
-		entra_tiro(m,placa);
-
-		busca_tiro(m);
-
-		sai_tiro(m, placa);
-
-		busca_tiro_placa(placa,right, &changed);
-
 		refresh();
 
 		usleep(60000);

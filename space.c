@@ -36,8 +36,8 @@ placa_a *inicia_placa(t_lista *l,placa_a *p, int lin, int col)
 	p = malloc(86*sizeof(p));
 	p -> linha = 6;
 	p -> coluna = 4;
-	p -> altura = lin*0.43;
-	p -> largura = col*0.40;
+	p -> altura = lin*0.45;
+	p -> largura = col*0.45;
 	p -> numero_aliens = 0;
 	int i,k;
 	p -> data = malloc(p -> altura * sizeof(p -> data));
@@ -80,12 +80,6 @@ placa_a *inicia_placa(t_lista *l,placa_a *p, int lin, int col)
 	for (i = 1; i < p -> largura - 5 ; i+= 7)
 	{
 		gera_alien(l,p,12,i,3);
-		p -> numero_aliens++;
-	}
-
-	for (i = 1; i < p -> largura - 5 ; i+= 7)
-	{
-		gera_alien(l,p,18,i,3);
 		p -> numero_aliens++;
 	}
 	return p;
@@ -217,6 +211,19 @@ void imprime_barreiras(mapa *m,t_nodo *n)
 		}
 	}	
 }
+
+void alien_atira(t_lista *l , placa_a *p)
+{
+	t_nodo *aux;
+	aux = l -> begin;
+	while(aux != NULL)
+	{
+		if (aux -> type == 4)
+			break;
+		aux = aux -> next;
+	}
+	p -> data[aux -> lin + aux -> alt-3][aux -> col + 2] = '$';
+}
 void gera_alien(t_lista *l,placa_a *p, int linIni,int colIni, int tipo)
 {
 	if (tipo == 1)
@@ -267,6 +274,14 @@ void gera_alien(t_lista *l,placa_a *p, int linIni,int colIni, int tipo)
 		insere_fim_lista(tipo + 1,linIni,colIni,5,5,1,l);
 	}
 }
+
+int chocou(placa_a *p, t_lista *l, mapa *m)
+{
+	if (p -> linha + p -> altura == m -> linhas - 9)
+	{
+		remove_barreira(l,m);
+	}
+}
 void transicao(mapa *m, placa_a *p)
 {
 	int i,k;
@@ -277,6 +292,18 @@ void transicao(mapa *m, placa_a *p)
 			m -> data[i + (p -> linha)][k + (p -> coluna)] = p -> data[i][k]; 
 		}
 	}
+}
+void tiros(t_lista *l,placa_a *p, mapa *m, int right, int *changed)
+{
+	atinge_alien(l, p);
+		
+	entra_tiro(m,p);
+
+	busca_tiro(m);
+
+	sai_tiro(m, p);
+
+	busca_tiro_placa(p,right, changed);
 }
 void deletecolumn(mapa *m, placa_a *p, int *right)
 {
@@ -435,9 +462,9 @@ void busca_e_remove(t_lista *l, placa_a *p)
 		{
 			if (n -> state == 0)
 			{
-				for (i = n -> lin ; i < n -> lin + n -> larg ; i++)
+				for (i = n -> lin ; i < n -> lin + n -> alt ; i++)
 				{
-					for (k = n -> col; k < n -> col + n -> alt  ; k++)
+					for (k = n -> col; k < n -> col + n -> larg ; k++)
 					{
 						p -> data[i][k] = ' ';
 					}
@@ -449,6 +476,36 @@ void busca_e_remove(t_lista *l, placa_a *p)
 				p -> numero_aliens--;
 			}
 			
+		}
+		if (!val)
+			n = n -> next;
+		else
+			val = 0;
+	}
+}
+
+void remove_barreira(t_lista *l, mapa *m)
+{
+	t_nodo *n;
+	t_nodo *aux;
+	int i,k;
+	int val = 0;
+	n = l -> begin;
+	while (n != NULL)
+	{
+		if (n -> type == 5)
+		{
+				for (i = n -> lin ; i < n -> lin + n -> alt ; i++)
+				{
+					for (k = n -> col; k < n -> col + n -> larg ; k++)
+					{
+						m -> data[i][k] = ' ';
+					}
+				}
+				val = 1;
+				aux = n -> next;
+				remove_nodo(l,n);
+				n = aux;
 		}
 		if (!val)
 			n = n -> next;
