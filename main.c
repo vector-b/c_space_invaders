@@ -7,13 +7,18 @@
 int main()
 {
 	int lin,col;
+	int pontucao;
 	int i,j,right,changed;
 	int ganhou = 1;
+
 
 	/* Inicialização dos recursos ncurses */
 	initscr();				
 	clear();	
 	refresh();
+	start_color();
+	init_pair(1, COLOR_WHITE, COLOR_BLACK);
+	wattron(stdscr, COLOR_PAIR(1));
 	getmaxyx(stdscr, lin, col);
 	cbreak();               /* desabilita o buffer de entrada */
     noecho();               /* não mostra os caracteres digitados */
@@ -21,7 +26,8 @@ int main()
     keypad(stdscr, TRUE);   /* permite a leitura das setas */
     curs_set(FALSE);        /* não mostra o cursor na tela */
 
-
+	lin = 37;
+	col = 150;
 
 	int contador = 1;
 	/* Inicia o mapa */
@@ -72,19 +78,19 @@ int main()
 	inicia_nave(obj);
 
 
-	imprime_lista(obj);
+	//imprime_lista(obj);
 
-	sleep(2);
+	//sleep(2);
 	while (ganhou) /*ganhou, perdeu ou apertou esc*/
 	{
 
-		srand(time(NULL));
+		/*srand(time(NULL));
 		int r = rand() % 2;
 		if (r == 1)
 		{
 			alien_atira(obj, placa);
 		}
-		
+		*/
 		if (placa -> numero_aliens == 0)
 			break;
 		if (m -> data[(placa -> linha)+ (placa -> altura)][(placa -> coluna) + (placa -> largura)] == '|')
@@ -186,14 +192,30 @@ int main()
 	/*Desalocar placa*/
 	/*Desalocar mapa*/
 
-	/* Finaliza as alterações do ncurses */
-	getch();
- 	endwin();
+	clear();
 	if (!ganhou)
 	{
-		printf("YOU LOSE MOTHERFUCKER\n");
+		printw("                                     ____                        ,----..                                            \n");
+		printw("  ,----..      ,---,               ,'  , `.    ,---,.           /   /   \\                  ,---,.,-.----.           \n");
+		printw(" /   /   \\    '  .' \\           ,-+-,.' _ |  ,'  .' |          /   .     :        ,---.  ,'  .' |\\    /  \\          \n");
+		printw("|   :     :  /  ;    '.      ,-+-. ;   , ||,---.'   |         .   /   ;.  \\      /__./|,---.'   |;   :    \\         \n");
+		printw(".   |  ;. / :  :       \\    ,--.'|'   |  ;||   |   .'        .   ;   /  ` ; ,---.;  ; ||   |   .'|   | .\\ :\n");
+		printw(".   ; /--`  :  |   /\\   \\  |   |  ,', |  '::   :  |-,        ;   |  ; \\ ; |/___/ \\  | |:   :  |-,.   : |: |         \n");
+		printw(";   | ;  __ |  :  ' ;.   : |   | /  | |  ||:   |  ;/|        |   :  | ; | '\\  ;  \\' |:   |  ;/||   |  \\ :         \n");
+		printw("|   : |.' .'|  |  ;/  \\   \'   | :  | :  |,|   :   .'        .   |  ' ' ' : \\   \\  \\: ||   :   .'|   : .  /         \n");
+		printw(".   | '_.' :'  :  | \\  \\ ,';   . |  ; |--' |   |  |-,        '   ;  \\; /  |  ;   \\  ' .|   |  |-,;   | |  \\         \n");
+		printw("'   ; : \\  ||  |  '  '--'  |   : |  | ,    '   :  ;/|         \\   \\  ',  /    \\   \\   ''   :  ;/||   | ;\\  \\        \n");
+		printw("'   | '/  .'|  :  :        |   : '  |/     |   |    \\          ;   :    /      \\   `  ;|   |    \\:   ' | \\.'        \n");
+		printw("|   :    /  |  | ,'        ;   | |`-'      |   :   .'           \\   \\ .'        :   \\ ||   :   .':   : :-'          \n");
+		printw(" \\   \\ .'   `--''          |   ;/          |   | ,'              `---`           '---\" |   | ,'  |   |.'            \n");
+		printw("  `---`                    '---'           `----'                                      `----'    `---'              \n");
 	}
 	else
 		printf("GANHOU FDP\n");
+		/* Finaliza as alterações do ncurses */
+	refresh();
+	sleep(6);
+	getch();
+ 	endwin();
 	return 0;
 }

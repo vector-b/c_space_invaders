@@ -37,7 +37,7 @@ placa_a *inicia_placa(t_lista *l,placa_a *p, int lin, int col)
 	p = malloc(86*sizeof(p));
 	p -> linha = 6;
 	p -> coluna = 4;
-	p -> altura = lin*0.45;
+	p -> altura = 17;
 	p -> largura = col*0.45;
 	p -> numero_aliens = 0;
 	int i,k;
@@ -216,7 +216,6 @@ void imprime_barreiras(mapa *m,t_nodo *n)
 	}	
 }
 
-
 void alien_atira(t_lista *l , placa_a *p)
 {
 	t_nodo *aux;
@@ -239,7 +238,21 @@ void alien_atira(t_lista *l , placa_a *p)
 	}
 	/* TEM QUE ARRUMAR O NUMERO DE ALIENS NO NUMBER, OU SEJA ACERTAR O MESMO NUMERO POR LINHAS */
 	printf("%d %d\n",chose -> lin, chose -> unity );
-	p -> data[chose -> lin + chose -> alt-2][chose -> col + 2] = '@';
+	p -> data[chose -> lin + chose -> alt-1][chose -> col + 2] = '@';
+}
+
+void busca_tiro_sai(placa_a *p, mapa *m)
+{
+	int i;
+	for (i = 0; i < p -> largura; i++)
+	{
+		if (p -> data[p -> altura - 1][i] == '@')
+		{
+			p -> data[p -> altura - 1 ][i] = ' ';
+			m -> data[p -> linha + p -> altura][p -> coluna + i] = '@'; 
+		}
+
+	}
 }
 void gera_alien(t_lista *l,placa_a *p, int linIni,int colIni, int tipo, int n)
 {
@@ -321,7 +334,11 @@ void tiros(t_lista *l,placa_a *p, mapa *m, int right, int *changed)
 
 	sai_tiro(m, p);
 
+	busca_tiro_alien(m, right);
+
 	busca_tiro_placa(p, right, changed);
+
+	busca_tiro_sai(p, m);
 
 	//busca_tiro_alien_placa(p, right, changed);
 
@@ -372,6 +389,31 @@ void busca_tiro(mapa *m)
 				m -> data[i-1][k] = 'o';
 				m -> data[i][k] = ' ';
 			}
+
+		}
+	}
+}
+void busca_tiro_alien(mapa *m, int right)
+{
+	int i,k;
+	for (i =  m -> linhas - 1 ; i > 5 ; i--)
+	{
+		for (k = m -> colunas; k > 2; k--)
+		{
+			if (m -> data[i][k] ==  '@')
+			{
+				m -> data[i-1][k] = ' ';
+				m -> data[i][k] = ' ';
+				if (i < m -> linhas - 3)
+				{
+					if (right)
+						m -> data[i+1][k + 1] = '@';
+					else
+						m -> data[i+1][k - 1] = '@';
+				}
+				
+			}
+
 		}
 	}
 }

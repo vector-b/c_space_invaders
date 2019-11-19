@@ -66,6 +66,8 @@ void atirar(t_nodo *n, mapa *m);
 
 void busca_tiro(mapa *m);
 
+void busca_tiro_alien(mapa *m, int right);
+
 void alien_atira(t_lista *l , placa_a *p);
 
 int chocou(placa_a *p, t_lista *l, mapa *m);
@@ -74,8 +76,9 @@ void tiros(t_lista *l,placa_a *p, mapa *m, int right, int *changed);
 
 void entra_tiro(mapa *m, placa_a *p);
 
-
 void busca_tiro_placa(placa_a *p, int dir, int *changed);
+
+void busca_tiro_sai(placa_a *p, mapa *m);
 
 void sai_tiro(mapa *m, placa_a *p);
 
