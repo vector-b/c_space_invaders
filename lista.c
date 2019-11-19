@@ -34,7 +34,7 @@ int lista_vazia(t_lista *l)
 	l -> tamanho = 0;
 }*/
 /*Insere no começo da lista, pelo ini*/
-int insere_fim_lista(int type, int lin, int col, int al, int la, int state, t_lista *l)
+int insere_fim_lista(int type, int lin, int col, int al, int la, int state, int unity, t_lista *l)
 {
 	t_nodo *n;
 	t_nodo *aux;
@@ -45,6 +45,7 @@ int insere_fim_lista(int type, int lin, int col, int al, int la, int state, t_li
 	n -> alt = al;
 	n -> larg = la;
 	n -> state = state;
+	n -> unity = unity;
 	if ( l -> begin == NULL)
 	{
 	     n -> next = NULL;

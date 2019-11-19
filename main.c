@@ -34,7 +34,7 @@ int main()
 	obj  = malloc(sizeof(obj));
 	
 	/* Inicia o canhão */
-	insere_fim_lista(1, (lin - 4), (col/2)-4, 2, 5, 1, obj);
+	insere_fim_lista(1, (lin - 4), (col/2)-4, 2, 5, 1, 1, obj);
 	inicia_canhao(obj,m);
 
 	/*for (int i = 0; i < 6; i++)
@@ -51,24 +51,24 @@ int main()
 
 	int pos = 20;
 	/* Inicia barreiras */
-	insere_fim_lista(5, lin-9, pos, 3, 7, 1, obj);
+	insere_fim_lista(5, lin-9, pos, 3, 7, 1, 1, obj);
 	inicia_barreira(obj);
 	imprime_barreiras(m,obj -> end);
 
-	insere_fim_lista(5, lin-9, pos+=35, 3, 7, 1, obj);
+	insere_fim_lista(5, lin-9, pos+=35, 3, 7, 1, 2, obj);
 	inicia_barreira(obj);
 	imprime_barreiras(m,obj -> end);
 
-	insere_fim_lista(5, lin-9, pos+=35, 3, 7, 1, obj);
+	insere_fim_lista(5, lin-9, pos+=35, 3, 7, 1, 3, obj);
 	inicia_barreira(obj);
 	imprime_barreiras(m,obj -> end);
 
-	insere_fim_lista(5, lin-9, pos+=35, 3, 7, 1, obj);
+	insere_fim_lista(5, lin-9, pos+=35, 3, 7, 1, 4, obj);
 	inicia_barreira(obj);
 	imprime_barreiras(m,obj -> end);
 	
 	/* Inicia Nave Mãe */
-	insere_fim_lista(6, 0, 0, 3, 9, 1, obj);
+	insere_fim_lista(6, 0, 0, 3, 9, 1, 1, obj);
 	inicia_nave(obj);
 
 

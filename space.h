@@ -8,6 +8,7 @@ struct t_nodo {
     int state;
     int alt;
     int larg;
+    int unity;
     struct t_nodo *next;
     struct t_nodo *prev;
 };
@@ -41,7 +42,7 @@ typedef struct placa_alienigiena
 int cria_lista(t_lista *l);
 int lista_vazia(t_lista *l);
 void destroi_lista(t_lista *l);
-int insere_fim_lista(int type, int lin, int col, int al, int la, int state, t_lista *l);
+int insere_fim_lista(int type, int lin, int col, int al, int la, int state, int unity, t_lista *l);
 void imprime_lista(t_lista *l);
 int remove_nodo(t_lista *l, t_nodo *n);
 
@@ -53,7 +54,7 @@ void *inicia_canhao(t_lista *l, mapa *m);
 
 void inicia_nave(t_lista *l);
 
-void gera_alien(t_lista *l,placa_a *p, int linIni,int colIni, int tipo);
+void gera_alien(t_lista *l,placa_a *p, int linIni,int colIni, int tipo, int n);
 
 void transicao(mapa *m, placa_a *p);
 

@@ -1,5 +1,6 @@
 #include "space.h"
 #include <stdlib.h>
+#include <time.h>
 #include <stdio.h>
 
 mapa *inicia_mapa(mapa *m, int lin, int col)
@@ -64,22 +65,25 @@ placa_a *inicia_placa(t_lista *l,placa_a *p, int lin, int col)
 		}
 	}
 
-	for (i = 2; i < p -> largura - 3; i+= 5)
+	int cont = 0;
+	for (i = 1; i < p -> largura - 3; i+= 5)
 	{
-		gera_alien(l,p,1,i,1);
+		gera_alien(l,p,1,i,1,++cont);
 		p -> numero_aliens++;
 	}
-		
+	int cont2 = 0;
 	for (i = 1; i < p -> largura - 5 ; i+= 7)
 	{
-		gera_alien(l,p,6,i,2);
+		int cont = 1;
+		gera_alien(l,p,6,i,2,++cont2);
 		p -> numero_aliens++;
 	}
 
-
+	int cont3 = 0;
 	for (i = 1; i < p -> largura - 5 ; i+= 7)
 	{
-		gera_alien(l,p,12,i,3);
+		int cont = 1;
+		gera_alien(l,p,12,i,3,++cont3);
 		p -> numero_aliens++;
 	}
 	return p;
@@ -215,17 +219,30 @@ void imprime_barreiras(mapa *m,t_nodo *n)
 void alien_atira(t_lista *l , placa_a *p)
 {
 	t_nodo *aux;
+	t_nodo *chose;
 	aux = l -> begin;
+	int tam = 0;
+	int number = 12;
+	srand(time(NULL));
+	int r = (rand() % (number-1))+1;
 	while(aux != NULL)
 	{
-		if (aux -> type == 4)
-			break;
-		aux = aux -> next;
+		if ((aux -> type >= 2) && (aux -> type <= 4))
+		{
+			if (aux -> unity == r)
+			{
+				chose = aux;
+			}
+		}
+		aux = aux -> next;			
 	}
-	p -> data[aux -> lin + aux -> alt-3][aux -> col + 2] = '$';
+
+	printf("%d %d\n",chose -> lin, chose -> unity );
+	p -> data[chose -> lin + chose -> alt-2][chose -> col + 2] = '$';
 }
-void gera_alien(t_lista *l,placa_a *p, int linIni,int colIni, int tipo)
+void gera_alien(t_lista *l,placa_a *p, int linIni,int colIni, int tipo, int n)
 {
+
 	if (tipo == 1)
 	{
 		p -> data[linIni][colIni+1] = 'A';
@@ -235,7 +252,7 @@ void gera_alien(t_lista *l,placa_a *p, int linIni,int colIni, int tipo)
 		p -> data[linIni+2][colIni] = '/';
 		p -> data[linIni+2][colIni+1] = 'X';
 		p -> data[linIni+2][colIni+2] = '\\';
-		insere_fim_lista(tipo + 1,linIni,colIni,3,3,1,l);
+		insere_fim_lista(tipo + 1,linIni,colIni,3,3,1,n,l);
 	}
 	else if (tipo == 2)
 	{
@@ -252,7 +269,7 @@ void gera_alien(t_lista *l,placa_a *p, int linIni,int colIni, int tipo)
 		p -> data[linIni+2][colIni+1] = '/';
 		p -> data[linIni+2][colIni+2] = ' ';
 		p -> data[linIni+2][colIni+3] = '\\';
-		insere_fim_lista(tipo + 1,linIni,colIni,5,5,1,l);
+		insere_fim_lista(tipo + 1,linIni,colIni,5,5,1,n,l);
 	}
 	else if (tipo == 3)
 	{
@@ -271,7 +288,7 @@ void gera_alien(t_lista *l,placa_a *p, int linIni,int colIni, int tipo)
 		p -> data[linIni+2][colIni+2] = '-';
 		p -> data[linIni+2][colIni+3] = '\\';
 		p -> data[linIni+2][colIni+4] = '_';
-		insere_fim_lista(tipo + 1,linIni,colIni,5,5,1,l);
+		insere_fim_lista(tipo + 1,linIni,colIni,5,5,1,n,l);
 	}
 }
 
