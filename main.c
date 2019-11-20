@@ -80,7 +80,7 @@ int main()
 
 	//imprime_lista(obj);
 
-	//sleep(2);
+	//==sleep(2);
 	while (ganhou) /*ganhou, perdeu ou apertou esc*/
 	{
 
@@ -125,7 +125,7 @@ int main()
 			mae = 1;
 		}
 
-		tiros(obj,placa, m, right, &changed, &score);
+		tiros(obj,placa, m, right, &changed, &score, &mae);
 
 		chocou(placa,obj,m);
 		
@@ -212,8 +212,17 @@ int main()
 		printw("  `---`                    '---'           `----'                                      `----'    `---'              \n");
 	}
 	else
-		printf("GANHOU FDP\n");
+	{
+		printw(" _____  ___    _______  ___  ___  ___________      ___       _______  ___      ___  _______  ___     \n");
+		printw("(\\\"   \\|\"  \\  /\"     \"||\"  \\/\"  |(\"     _   \")    |\"  |     /\"     \"||\"  \\   /\"  |/\"     \"||\"  |  \n");
+		printw("|.\\   \\   |(: ______) \\  \\  /  )__/  \\__/     ||  |    (: ______) \\  \\ //  /(: ______)||  |    \n");
+		printw("|: \\   \\  | \\/    |    \\  \\/      \\_ /        |:  |     \\/    |    \\  \\/. ./  \\/    |  |:  |     \n");
+		printw("|.  \\    \\. | // ___)_   /\\.  \\      |.  |         \\  |___  // ___)_    \\.    //   // ___)_  \\  |___  \n");
+		printw("|    \\    \\ |(:      \"| /  \\  \\     \\:  |        ( \\_|:  \\(:      \"|    \\   /   (:      \"|( \\_|:  \\  \n");
+		printw(" \\___|\\____\\) \\_______)|___/\\___|     \\__|         \\_______)\\_______)     \\__/     \\_______) \\_______)\n");
+
 		/* Finaliza as alterações do ncurses */
+	}
 	refresh();
 	sleep(6);
 	getch();

@@ -72,7 +72,7 @@ void alien_atira(t_lista *l , placa_a *p);
 
 int chocou(placa_a *p, t_lista *l, mapa *m);
 
-void tiros(t_lista *l,placa_a *p, mapa *m, int right, int *changed, int *score);
+void tiros(t_lista *l,placa_a *p, mapa *m, int right, int *changed, int *score, int *mae);
 
 void entra_tiro(mapa *m, placa_a *p);
 
@@ -85,6 +85,8 @@ void sai_tiro(mapa *m, placa_a *p);
 void imprime_canhao(t_nodo *n, mapa *m);
 
 void atinge_alien(t_lista *l, placa_a *p, int *score);
+
+void atinge_mae(t_lista *l, mapa *m, int *score, int *mae);
 
 void busca_e_remove(t_lista *l, placa_a *p);
 

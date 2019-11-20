@@ -155,11 +155,11 @@ void inicia_nave(t_lista *l)
 	aux -> data[0][8] = ' ';
 	aux -> data[1][0] = 'A';
 	aux -> data[1][1] = 'M';
-	aux -> data[1][2] = 'o';
+	aux -> data[1][2] = '0';
 	aux -> data[1][3] = 'M';
-	aux -> data[1][4] = 'o';
+	aux -> data[1][4] = '0';
 	aux -> data[1][5] = 'M';
-	aux -> data[1][6] = 'o';
+	aux -> data[1][6] = '0';
 	aux -> data[1][7] = 'M';
 	aux -> data[1][8] = 'A';
 	aux -> data[2][0] = ' ';
@@ -324,7 +324,7 @@ void transicao(mapa *m, placa_a *p)
 		}
 	}
 }
-void tiros(t_lista *l,placa_a *p, mapa *m, int right, int *changed, int *score)
+void tiros(t_lista *l,placa_a *p, mapa *m, int right, int *changed, int *score, int *mae)
 {
 	atinge_alien(l, p, score);
 		
@@ -339,6 +339,8 @@ void tiros(t_lista *l,placa_a *p, mapa *m, int right, int *changed, int *score)
 	busca_tiro_placa(p, right, changed);
 
 	busca_tiro_sai(p, m);
+
+	atinge_mae(l, m, score, mae);
 
 	//busca_tiro_alien_placa(p, right, changed);
 
@@ -493,31 +495,34 @@ void imprime_canhao(t_nodo *n, mapa *m)
 }
 void atinge_alien(t_lista *l, placa_a *p, int *score)
 {
-	int i;
+	int i,k;
 	t_nodo *n;
 	n = l -> begin;
 	while (n != NULL)
 	{
 		if (n -> type >= 2 && n -> type <= 4)
 		{
-			for (i = n -> col; i < n -> col + n -> larg - 1; i++)
+			for (i = n -> lin ; i < n -> lin + n -> alt; i++)
 			{
-				if (p -> data[n -> lin + n -> alt - 2 ][i] == 'o')
-				{ 
-					n -> state = 0;
-					p -> data[n -> lin + n -> alt - 2 ][i] = ' ';
-					busca_e_remove(l,p);
-					if (n -> type == 2)
+				for (k = n -> col; k < n -> col + n -> larg; k++)
+				{
+					if (p -> data[i][k] == 'o')
 					{
-						*score+=25;
-					}
-					else if (n -> type == 3)
-					{
-						*score+=15;
-					}
-					else
-					{
-						*score+=5;
+						n -> state = 0;
+						busca_e_remove(l,p);
+						if (n -> type == 2)
+						{
+							*score+=25;
+						}
+						else if (n -> type == 3)
+						{
+							*score+=15;
+						}
+						else
+						{
+							*score+=5;
+						}
+
 					}
 				}
 			}
@@ -525,6 +530,38 @@ void atinge_alien(t_lista *l, placa_a *p, int *score)
 		n = n -> next;
 	} 
 }
+void atinge_mae(t_lista *l, mapa *m, int *score, int *mae)
+{
+	if (*mae)
+	{
+		int i,k;
+		int j,p;
+		t_nodo *n;
+		n = l -> end;
+		for (i = n -> col ; i < (n -> col + n -> larg - 1) ; i++)
+		{
+				if (m -> data[n -> lin + n -> alt - 1 ][i] == 'o')
+				{
+					
+					for (j = n -> lin ; j < n -> lin + n -> alt; j++)
+					{
+						for (p = n -> col; p < n -> col + n -> larg ; p++)
+						{
+							m -> data[j][p] = ' ';
+
+						}
+					}
+					n -> col = 2;
+					*mae = 0;
+
+
+					*score += 200;
+					printf("hitou\n");
+				}
+		}
+	}
+}
+
 void busca_e_remove(t_lista *l, placa_a *p)
 {
 	t_nodo *n;
