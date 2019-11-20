@@ -12,13 +12,14 @@ int main()
 	int i,j,right,changed;
 	int ganhou = 1;
 
-
+	//system("mpg123 lavender.mp3 &");
 	/* Inicialização dos recursos ncurses */
 	initscr();				
 	clear();	
 	refresh();
 	start_color();
 	init_pair(1, COLOR_WHITE, COLOR_BLACK);
+	init_pair(2, COLOR_WHITE, COLOR_BLUE);
 	wattron(stdscr, COLOR_PAIR(1));
 	getmaxyx(stdscr, tlin, tcol);
 	cbreak();               /* desabilita o buffer de entrada */
@@ -91,13 +92,13 @@ int main()
 	while (ganhou) /*ganhou, perdeu ou apertou esc*/
 	{
 
-		/*srand(time(NULL));
+		srand(time(NULL));
 		int r = rand() % 2;
 		if (r == 1)
 		{
 			alien_atira(obj, placa);
 		}
-		*/
+		
 		if (placa -> numero_aliens == 0)
 			break;
 		if (m -> data[(placa -> linha)+ (placa -> altura)][(placa -> coluna) + (placa -> largura)] == '|')
@@ -203,14 +204,14 @@ int main()
 	clear();
 	if (!ganhou)
 	{
-		printw("                                     ____                        ,----..                                            \n");
+    	printw("                                     ____                        ,----..                                            \n");
 		printw("  ,----..      ,---,               ,'  , `.    ,---,.           /   /   \\                  ,---,.,-.----.           \n");
 		printw(" /   /   \\    '  .' \\           ,-+-,.' _ |  ,'  .' |          /   .     :        ,---.  ,'  .' |\\    /  \\          \n");
 		printw("|   :     :  /  ;    '.      ,-+-. ;   , ||,---.'   |         .   /   ;.  \\      /__./|,---.'   |;   :    \\         \n");
 		printw(".   |  ;. / :  :       \\    ,--.'|'   |  ;||   |   .'        .   ;   /  ` ; ,---.;  ; ||   |   .'|   | .\\ :\n");
 		printw(".   ; /--`  :  |   /\\   \\  |   |  ,', |  '::   :  |-,        ;   |  ; \\ ; |/___/ \\  | |:   :  |-,.   : |: |         \n");
-		printw(";   | ;  __ |  :  ' ;.   : |   | /  | |  ||:   |  ;/|        |   :  | ; | '\\  ;  \\' |:   |  ;/||   |  \\ :         \n");
-		printw("|   : |.' .'|  |  ;/  \\   \'   | :  | :  |,|   :   .'        .   |  ' ' ' : \\   \\  \\: ||   :   .'|   : .  /         \n");
+		printw(";   | ;  __ |  :  ' ;.   : |   | /  | |  ||:   |  ;/|        |   :  | ; | '\\  ;  \\' |:  |  ;/||   |  \\ :         \n");
+		printw("|   : |.' .'|  |  ;/  \\   \'   | :  | :  |,|   :   .'         .   |  ' ' ' : \\   \\  \\: ||   :   .'|   : .  /         \n");
 		printw(".   | '_.' :'  :  | \\  \\ ,';   . |  ; |--' |   |  |-,        '   ;  \\; /  |  ;   \\  ' .|   |  |-,;   | |  \\         \n");
 		printw("'   ; : \\  ||  |  '  '--'  |   : |  | ,    '   :  ;/|         \\   \\  ',  /    \\   \\   ''   :  ;/||   | ;\\  \\        \n");
 		printw("'   | '/  .'|  :  :        |   : '  |/     |   |    \\          ;   :    /      \\   `  ;|   |    \\:   ' | \\.'        \n");

@@ -37,7 +37,7 @@ placa_a *inicia_placa(t_lista *l,placa_a *p, int lin, int col)
 	p = malloc(86*sizeof(p));
 	p -> linha = 6;
 	p -> coluna = 4;
-	p -> altura = 17;
+	p -> altura = 19;
 	p -> largura = col*0.45;
 	p -> numero_aliens = 0;
 	int i,k;
@@ -66,13 +66,13 @@ placa_a *inicia_placa(t_lista *l,placa_a *p, int lin, int col)
 	}
 
 	int cont = 0;
-	for (i = 1; i < p -> largura - 3; i+= 5)
+	for (i = 3; i < p -> largura - 3; i+= 7)
 	{
 		gera_alien(l,p,1,i,1,++cont);
 		p -> numero_aliens++;
 	}
 	int cont2 = 0;
-	for (i = 1; i < p -> largura - 5 ; i+= 7)
+	for (i = 3; i < p -> largura - 5 ; i+= 7)
 	{
 		int cont = 1;
 		gera_alien(l,p,6,i,2,++cont2);
@@ -80,7 +80,7 @@ placa_a *inicia_placa(t_lista *l,placa_a *p, int lin, int col)
 	}
 
 	int cont3 = 0;
-	for (i = 1; i < p -> largura - 5 ; i+= 7)
+	for (i = 3; i < p -> largura - 5 ; i+= 7)
 	{
 		int cont = 1;
 		gera_alien(l,p,12,i,3,++cont3);
@@ -218,13 +218,15 @@ void imprime_barreiras(mapa *m,t_nodo *n)
 
 void alien_atira(t_lista *l , placa_a *p)
 {
+	
 	t_nodo *aux;
 	t_nodo *chose;
+	chose = NULL;
 	aux = l -> begin;
 	int tam = 0;
-	int number = 12;
+	int number = p -> numero_aliens / 3;
 	srand(time(NULL));
-	int r = (rand() % (number-1))+1;
+	int r = (rand() % (number))+1;
 	while(aux != NULL)
 	{
 		if ((aux -> type >= 2) && (aux -> type <= 4))
@@ -236,9 +238,16 @@ void alien_atira(t_lista *l , placa_a *p)
 		}
 		aux = aux -> next;			
 	}
+	if (chose != NULL)
+	{
+		printf("%d %d\n",chose -> lin, chose -> unity );
+		if (chose -> type == 2)
+				p -> data[chose -> lin + chose -> alt][chose -> col + chose -> larg/2] = '@';
+		else
+				p -> data[chose -> lin + chose -> alt - 2][chose -> col + chose -> larg/2] = '@';
+	}
 	/* TEM QUE ARRUMAR O NUMERO DE ALIENS NO NUMBER, OU SEJA ACERTAR O MESMO NUMERO POR LINHAS */
-	printf("%d %d\n",chose -> lin, chose -> unity );
-	p -> data[chose -> lin + chose -> alt-1][chose -> col + 2] = '@';
+	
 }
 
 void busca_tiro_sai(placa_a *p, mapa *m)
