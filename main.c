@@ -7,6 +7,7 @@
 int main()
 {
 	int lin,col;
+	int tlin,tcol;
 	int score = 0;
 	int i,j,right,changed;
 	int ganhou = 1;
@@ -19,7 +20,7 @@ int main()
 	start_color();
 	init_pair(1, COLOR_WHITE, COLOR_BLACK);
 	wattron(stdscr, COLOR_PAIR(1));
-	getmaxyx(stdscr, lin, col);
+	getmaxyx(stdscr, tlin, tcol);
 	cbreak();               /* desabilita o buffer de entrada */
     noecho();               /* não mostra os caracteres digitados */
     nodelay(stdscr, TRUE);  /* faz com que getch não aguarde a digitação */
@@ -29,6 +30,12 @@ int main()
 	lin = 37;
 	col = 150;
 
+	if (tlin < 37 || tcol < 150)
+	{
+		endwin();
+		printf("Tamanho de tela insuficiente\n");
+		exit(1);
+	}
 	int contador = 1;
 	/* Inicia o mapa */
 	mapa *m;
