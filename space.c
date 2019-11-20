@@ -24,7 +24,7 @@ mapa *inicia_mapa(mapa *m, int lin, int col)
 		m -> data[(m -> linhas) - 1][k] = '-';
 	}
 	/*border right-left*/
-	for (k = 1; k < m -> linhas -1 ; k++)
+	for (k = 5; k < m -> linhas -1 ; k++)
 	{
 		m -> data[k][0] = '|';
 		m -> data[k][(m -> colunas) - 1] = '|';
@@ -421,11 +421,27 @@ void busca_tiro_alien(mapa *m, int right)
 }
 void entra_tiro(mapa *m, placa_a *p)
 {
-	int i;
+	int i,k;
 	for (i = 0; i < p -> largura; i++)
 	{
 		if (m -> data[p -> linha + p -> altura][p -> coluna + i] == 'o')
 			p -> data[p->altura-1][i] = 'o';
+	}
+	for (k = 0 ; k < p -> altura; k++)
+	{
+		if (m -> data[p -> linha + k][p -> coluna - 1] == 'o')
+		{
+			p -> data[k][0] = 'o';
+			m -> data[p -> linha + k][p -> coluna - 1] = ' ';
+		}
+	}
+	for (k = 0 ; k < p -> altura; k++)
+	{
+		if (m -> data[p -> linha + k][p -> coluna + p -> largura] == 'o')
+		{
+			p -> data[k][p -> largura - 1 ] = 'o';
+			m -> data[p -> linha + k][p -> coluna + p -> largura] = ' ';
+		}
 	}
 }
 void sai_tiro(mapa *m, placa_a *p)
