@@ -67,6 +67,7 @@ while(1)
 
 	int pos = 20;
 	/* Inicia barreiras */
+	/* Barreira -> tipo 5 // 4 Unidades */
 	insere_fim_lista(5, lin-9, pos, 3, 7, 1, 1, obj);
 	inicia_barreira(obj);
 	imprime_barreiras(m,obj -> end);
@@ -87,6 +88,7 @@ while(1)
 	insere_fim_lista(6, 0, 0, 3, 9, 1, 1, obj);
 	inicia_nave(obj);
 
+	/*Número de aliens por linha */
 	int number = placa -> numero_aliens / 3;
 
 
@@ -121,12 +123,17 @@ while(1)
 			}
 		}
 
-
+		diminui_placa(obj,placa);
+		for (i = 0; i < placa -> largura; i++)
+		{
+		placa -> data[0][i] = '-';
+		placa -> data[placa -> altura - 1][i] = '-';
+		}
 		srand(time(NULL));
 		int r = rand() % 2;
 		if (r == 1)
 		{
-			alien_atira(obj, placa, number);
+			//alien_atira(obj, placa, number);
 		}
 		
 		if (placa -> numero_aliens == 0)

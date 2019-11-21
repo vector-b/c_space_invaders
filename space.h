@@ -78,11 +78,11 @@ void entra_tiro(mapa *m, placa_a *p);
 
 void busca_tiro_placa(placa_a *p, int dir, int *changed, int mod );
 
-void busca_tiro_sai(placa_a *p, mapa *m);
-
 void sai_tiro(mapa *m, placa_a *p);
 
 void imprime_canhao(t_nodo *n, mapa *m);
+
+void diminui_placa(t_lista *l, placa_a *p);
 
 void atinge_alien(t_lista *l, placa_a *p, int *score);
 

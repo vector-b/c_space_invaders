@@ -54,8 +54,8 @@ placa_a *inicia_placa(t_lista *l,placa_a *p, int lin, int col)
 	}
 	for (i = 0; i < p -> largura; i++)
 	{
-		p -> data[0][i] = ' ';
-		p -> data[p -> altura - 1][i] = ' ';
+		p -> data[0][i] = '-';
+		p -> data[p -> altura - 1][i] = '-';
 	}
 	for (i = 1; i < p -> altura-1; i++)
 	{
@@ -249,19 +249,6 @@ void alien_atira(t_lista *l , placa_a *p, int number)
 	
 }
 
-void busca_tiro_sai(placa_a *p, mapa *m)
-{
-	int i;
-	for (i = 0; i < p -> largura; i++)
-	{
-		if (p -> data[p -> altura - 1][i] == '@')
-		{
-			p -> data[p -> altura - 1 ][i] = ' ';
-			m -> data[p -> linha + p -> altura][p -> coluna + i] = '@'; 
-		}
-
-	}
-}
 void gera_alien(t_lista *l,placa_a *p, int linIni,int colIni, int tipo, int n)
 {
 
@@ -346,7 +333,6 @@ void tiros(t_lista *l,placa_a *p, mapa *m, int right, int *changed, int *score, 
 
 	busca_tiro_placa(p, right, changed, mod);
 
-	busca_tiro_sai(p, m);
 
 	atinge_mae(l, m, score, mae);
 
@@ -531,6 +517,31 @@ void imprime_canhao(t_nodo *n, mapa *m)
 				m -> data [n -> lin + i][n -> col + k + 1] = ' ';  
 		}
 	}	
+}
+void diminui_placa(t_lista *l, placa_a *p)
+{
+	int a2;
+	int a3;
+	int a4;
+
+	t_nodo *n;
+	n = l -> begin;
+	while (n != NULL)
+	{
+		if (n -> type == 4)
+			a4++;
+		if (n -> type == 3)
+			a3++;
+		if (n -> type == 2)
+			a2++;
+		n = n -> next;
+	}
+	if (a4 == 0)
+	{
+		p -> altura = 10 ;
+		/*if (a3 == 0)
+			p -> altura -= 5;*/
+	}
 }
 void atinge_alien(t_lista *l, placa_a *p, int *score)
 {
