@@ -12,6 +12,7 @@ int main()
 	int i,j,right,changed;
 	int ganhou = 1;
 
+
 	//system("mpg123 lavender.mp3 &");
 	/* Inicialização dos recursos ncurses */
 	initscr();				
@@ -48,10 +49,13 @@ int main()
 	t_lista *obj;
 	obj  = malloc(sizeof(obj));
 	
-
+	int dificuldade = 1;
 
 while(1)
 {
+
+	int temporizador_canhao = 0;
+	
 	/* Inicia o canhão */
 	m = inicia_mapa(m,lin,col);
 	insere_fim_lista(1, (lin - 4), (col/2)-4, 2, 5, 1, 1, obj);
@@ -127,6 +131,7 @@ while(1)
 		
 		if (placa -> numero_aliens == 0)
 			break;
+
 		if (m -> data[(placa -> linha)+ (placa -> altura)][(placa -> coluna) + (placa -> largura)] == '|')
 		{
 			right = 0;
@@ -165,15 +170,19 @@ while(1)
 		
 		refresh();
 
-		usleep(60000);
+		usleep(50000);
 
 		clear();
 
 		/* Empurra a placa pro lado */
-		if (right)
-			placa -> coluna++;
-		else
-			placa -> coluna--;
+
+		if (dificuldade % 3 == 0)
+		{
+			if (right)
+				placa -> coluna++;
+			else
+				placa -> coluna--;
+		}
 
 		/* Atualiz a placa no mapa */
 		transicao(m,placa);
@@ -188,12 +197,14 @@ while(1)
 		{
     		case 'd':
     		{
-    			obj -> begin -> col++;
+    			if (temporizador_canhao % 1 == 0)
+    				obj -> begin -> col++;	
         		break;
     		}
     		case 'a':
     		{
-    			obj -> begin -> col--;
+    			if (temporizador_canhao % 1 == 0)
+    				obj -> begin -> col--;
         		break;
     		}
     		case 'p':
@@ -235,6 +246,7 @@ while(1)
 		sleep(4);
 
 	}
+	dificuldade++;
 }
 
 	
