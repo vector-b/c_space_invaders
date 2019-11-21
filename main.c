@@ -49,12 +49,12 @@ int main()
 	t_lista *obj;
 	obj  = malloc(sizeof(obj));
 	
-	int dificuldade = 1;
+	int dificuldade = 6;
 
 while(1)
 {
 
-	int temporizador_canhao = 0;
+	int temporizador = 1;
 	
 	/* Inicia o canhão */
 	m = inicia_mapa(m,lin,col);
@@ -176,7 +176,7 @@ while(1)
 
 		/* Empurra a placa pro lado */
 
-		if (dificuldade % 3 == 0)
+		if (temporizador % dificuldade == 0)
 		{
 			if (right)
 				placa -> coluna++;
@@ -197,14 +197,12 @@ while(1)
 		{
     		case 'd':
     		{
-    			if (temporizador_canhao % 1 == 0)
-    				obj -> begin -> col++;	
+    			obj -> begin -> col++;	
         		break;
     		}
     		case 'a':
     		{
-    			if (temporizador_canhao % 1 == 0)
-    				obj -> begin -> col--;
+    			obj -> begin -> col--;
         		break;
     		}
     		case 'p':
@@ -228,6 +226,8 @@ while(1)
 		}
 		if (!mae)
 			contador++;
+
+		temporizador++;
 	}
 
 	if (!ganhou)
