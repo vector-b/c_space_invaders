@@ -124,16 +124,16 @@ while(1)
 		}
 
 		diminui_placa(obj,placa);
-		for (i = 0; i < placa -> largura; i++)
+		/*for (i = 0; i < placa -> largura; i++)
 		{
 		placa -> data[0][i] = '-';
 		placa -> data[placa -> altura - 1][i] = '-';
-		}
+		}*/
 		srand(time(NULL));
 		int r = rand() % 2;
 		if (r == 1)
 		{
-			//alien_atira(obj, placa, number);
+			alien_atira(obj, placa, number);
 		}
 		
 		if (placa -> numero_aliens == 0)

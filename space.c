@@ -37,7 +37,7 @@ placa_a *inicia_placa(t_lista *l,placa_a *p, int lin, int col)
 	p = malloc(86*sizeof(p));
 	p -> linha = 6;
 	p -> coluna = 4;
-	p -> altura = 19;
+	p -> altura = 17;
 	p -> largura = col*0.45;
 	p -> numero_aliens = 0;
 	int i,k;
@@ -54,8 +54,8 @@ placa_a *inicia_placa(t_lista *l,placa_a *p, int lin, int col)
 	}
 	for (i = 0; i < p -> largura; i++)
 	{
-		p -> data[0][i] = '-';
-		p -> data[p -> altura - 1][i] = '-';
+		p -> data[0][i] = ' ';
+		p -> data[p -> altura - 1][i] = ' ';
 	}
 	for (i = 1; i < p -> altura-1; i++)
 	{
@@ -520,9 +520,9 @@ void imprime_canhao(t_nodo *n, mapa *m)
 }
 void diminui_placa(t_lista *l, placa_a *p)
 {
-	int a2;
-	int a3;
-	int a4;
+	int a2 = 0;
+	int a3 = 0;
+	int a4 = 0;
 
 	t_nodo *n;
 	n = l -> begin;
@@ -536,11 +536,13 @@ void diminui_placa(t_lista *l, placa_a *p)
 			a2++;
 		n = n -> next;
 	}
+	move(2,20);
+	printw("%d %d", a4, a3);
 	if (a4 == 0)
 	{
 		p -> altura = 10 ;
-		/*if (a3 == 0)
-			p -> altura -= 5;*/
+		if (a3 == 0)
+			p -> altura = 5;
 	}
 }
 void atinge_alien(t_lista *l, placa_a *p, int *score)
