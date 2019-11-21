@@ -72,11 +72,11 @@ void alien_atira(t_lista *l , placa_a *p, int number);
 
 int chocou(placa_a *p, t_lista *l, mapa *m);
 
-void tiros(t_lista *l,placa_a *p, mapa *m, int right, int *changed, int *score, int *mae);
+void tiros(t_lista *l,placa_a *p, mapa *m, int right, int *changed, int *score, int *mae, int mod);
 
 void entra_tiro(mapa *m, placa_a *p);
 
-void busca_tiro_placa(placa_a *p, int dir, int *changed);
+void busca_tiro_placa(placa_a *p, int dir, int *changed, int mod );
 
 void busca_tiro_sai(placa_a *p, mapa *m);
 

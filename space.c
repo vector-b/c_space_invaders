@@ -332,7 +332,7 @@ void transicao(mapa *m, placa_a *p)
 		}
 	}
 }
-void tiros(t_lista *l,placa_a *p, mapa *m, int right, int *changed, int *score, int *mae)
+void tiros(t_lista *l,placa_a *p, mapa *m, int right, int *changed, int *score, int *mae, int mod)
 {
 	atinge_alien(l, p, score);
 		
@@ -344,7 +344,7 @@ void tiros(t_lista *l,placa_a *p, mapa *m, int right, int *changed, int *score, 
 
 	busca_tiro_alien(m, right);
 
-	busca_tiro_placa(p, right, changed);
+	busca_tiro_placa(p, right, changed, mod);
 
 	busca_tiro_sai(p, m);
 
@@ -465,7 +465,7 @@ void sai_tiro(mapa *m, placa_a *p)
 
 	}
 }
-void busca_tiro_placa(placa_a *p, int dir, int *changed)
+void busca_tiro_placa(placa_a *p, int dir, int *changed, int mod)
 {
 	int i,k;
 	for (i = 0; i <  p -> altura ; i++)
@@ -474,23 +474,33 @@ void busca_tiro_placa(placa_a *p, int dir, int *changed)
 		{
 			if (p -> data[i][k] == 'o')
 			{
-				if (*changed == 0)
+				if (mod == 0)
 				{
-					if (dir)
-						p -> data[i-1][k-1] = 'o';
-					else
-						p -> data[i-1][k+1] = 'o';
-					p -> data[i][k] = ' ';
+					if (*changed == 0)
+					{
+						if (dir)
+							p -> data[i-1][k-1] = 'o';
+						else
+							p -> data[i-1][k+1] = 'o';
+						p -> data[i][k] = ' ';
 
-				}	
+					}	
+					else
+					{
+						if (dir)
+							p -> data[i-1][k+1] = 'o';
+						else
+							p -> data[i-1][k-1] = 'o';
+						p -> data[i][k] = ' ';
+						*changed = 0;
+					}
+				
+				}
 				else
 				{
-					if (dir)
-						p -> data[i-1][k+1] = 'o';
-					else
-						p -> data[i-1][k-1] = 'o';
 					p -> data[i][k] = ' ';
-					*changed = 0;
+					p -> data[i-1][k] = 'o';
+
 				}
 				
 			}

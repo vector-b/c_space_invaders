@@ -132,21 +132,6 @@ while(1)
 		if (placa -> numero_aliens == 0)
 			break;
 
-		if (m -> data[(placa -> linha)+ (placa -> altura)][(placa -> coluna) + (placa -> largura)] == '|')
-		{
-			right = 0;
-			changed = 1;
-			deletetop(m,placa);
-			deletecolumn(m,placa,&right);
-		}
-		else if (m -> data[(placa -> linha) -1 ][(placa -> coluna) - 1] == '|')
-		{
-			right = 1;
-			changed = 1;
-			deletetop(m,placa);
-			deletecolumn(m,placa,&right);
-		}
-
 		if (atinge_canhao(obj, placa, m))
 			ganhou = 0;
 		
@@ -164,7 +149,9 @@ while(1)
 			mae = 1;
 		}
 
-		tiros(obj,placa, m, right, &changed, &score, &mae);
+		int mod = temporizador % dificuldade;
+
+		tiros(obj,placa, m, right, &changed, &score, &mae, mod);
 
 		chocou(placa,obj,m);
 		
@@ -178,21 +165,39 @@ while(1)
 
 		if (temporizador % dificuldade == 0)
 		{
+
+		if (m -> data[(placa -> linha)+ (placa -> altura)][(placa -> coluna) + (placa -> largura)] == '|')
+		{
+			right = 0;
+			changed = 1;
+			deletetop(m,placa);
+			deletecolumn(m,placa,&right);
+		}
+		else if (m -> data[(placa -> linha) -1 ][(placa -> coluna) - 1] == '|')
+		{
+			right = 1;
+			changed = 1;
+			deletetop(m,placa);
+			deletecolumn(m,placa,&right);
+		}
+
 			if (right)
 				placa -> coluna++;
 			else
 				placa -> coluna--;
+
+			if (right)
+				deletecolumn(m,placa,&right);
+			else
+				deletecolumn(m,placa,&right);
+
 		}
 
 		/* Atualiz a placa no mapa */
 		transicao(m,placa);
 
 		/* Apaga a parte da placa que ficou pra tras */ 
-		if (right)
-			deletecolumn(m,placa,&right);
-		else
-			deletecolumn(m,placa,&right);
-
+	
 		switch(getch()) 
 		{
     		case 'd':
@@ -246,7 +251,7 @@ while(1)
 		sleep(4);
 
 	}
-	dificuldade++;
+	dificuldade--;
 }
 
 	
