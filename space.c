@@ -241,9 +241,15 @@ void alien_atira(t_lista *l , placa_a *p, int number)
 	{
 		//printf("%d %d\n",chose -> lin, chose -> unity );
 		if (chose -> type == 2)
-				p -> data[chose -> lin + chose -> alt][chose -> col + chose -> larg/2] = '@';
+		{
+				move(p -> linha + chose -> lin + chose -> alt + 2, p -> coluna + chose -> col + chose -> larg/2);
+				printw("@");
+		}
 		else
-				p -> data[chose -> lin + chose -> alt - 2][chose -> col + chose -> larg/2] = '@';
+		{
+				move(p -> linha + chose -> lin + chose -> alt,p -> coluna + chose -> col + chose -> larg/2);
+				printw("@");
+		}	
 	}
 	/* TEM QUE ARRUMAR O NUMERO DE ALIENS NO NUMBER, OU SEJA ACERTAR O MESMO NUMERO POR LINHAS */
 	
