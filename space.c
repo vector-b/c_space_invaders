@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <stdio.h>
-
+#include <ncurses.h>
 mapa *inicia_mapa(mapa *m, int lin, int col)
 {
 	m = malloc(sizeof(m));
@@ -54,8 +54,8 @@ placa_a *inicia_placa(t_lista *l,placa_a *p, int lin, int col)
 	}
 	for (i = 0; i < p -> largura; i++)
 	{
-		p -> data[0][i] = '-';
-		p -> data[p -> altura - 1][i] = '-';
+		p -> data[0][i] = ' ';
+		p -> data[p -> altura - 1][i] = ' ';
 	}
 	for (i = 1; i < p -> altura-1; i++)
 	{
@@ -216,7 +216,7 @@ void imprime_barreiras(mapa *m,t_nodo *n)
 	}	
 }
 
-void alien_atira(t_lista *l , placa_a *p)
+void alien_atira(t_lista *l , placa_a *p, int number)
 {
 	
 	t_nodo *aux;
@@ -224,7 +224,6 @@ void alien_atira(t_lista *l , placa_a *p)
 	chose = NULL;
 	aux = l -> begin;
 	int tam = 0;
-	int number = p -> numero_aliens / 3;
 	srand(time(NULL));
 	int r = (rand() % (number))+1;
 	while(aux != NULL)
@@ -240,7 +239,7 @@ void alien_atira(t_lista *l , placa_a *p)
 	}
 	if (chose != NULL)
 	{
-		printf("%d %d\n",chose -> lin, chose -> unity );
+		//printf("%d %d\n",chose -> lin, chose -> unity );
 		if (chose -> type == 2)
 				p -> data[chose -> lin + chose -> alt][chose -> col + chose -> larg/2] = '@';
 		else
@@ -498,6 +497,11 @@ void busca_tiro_placa(placa_a *p, int dir, int *changed)
 		
 		}
 	}
+	int j, f;
+	j = 0;
+	f = 0;
+	
+
 }
 void imprime_canhao(t_nodo *n, mapa *m)
 {

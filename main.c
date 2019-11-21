@@ -41,27 +41,25 @@ int main()
 	/* Inicia o mapa */
 	mapa *m;
 	m = malloc(sizeof(m));
-	m = inicia_mapa(m,lin,col);
 
+	placa_a *placa;
+	placa = malloc(sizeof(placa));
 
 	t_lista *obj;
 	obj  = malloc(sizeof(obj));
 	
+
+
+while(1)
+{
 	/* Inicia o canhão */
+	m = inicia_mapa(m,lin,col);
 	insere_fim_lista(1, (lin - 4), (col/2)-4, 2, 5, 1, 1, obj);
 	inicia_canhao(obj,m);
-
-	/*for (int i = 0; i < 6; i++)
-	{
-		insere_fim_lista(2+i,2,12,3,3,1,obj);
-		insere_fim_lista(9+i,2,12,3,3,1,obj);
-		insere_fim_lista(92+i,2,12,3,3,1,obj);
-	}*/
+	placa = inicia_placa(obj,placa, lin, col);
 	int mae = 0;
 
-	placa_a *placa;
-	placa = malloc(sizeof(placa));
-	placa = inicia_placa(obj,placa, lin, col);
+
 
 	int pos = 20;
 	/* Inicia barreiras */
@@ -85,18 +83,46 @@ int main()
 	insere_fim_lista(6, 0, 0, 3, 9, 1, 1, obj);
 	inicia_nave(obj);
 
+	int number = placa -> numero_aliens / 3;
 
-	//imprime_lista(obj);
 
-	//==sleep(2);
 	while (ganhou) /*ganhou, perdeu ou apertou esc*/
 	{
+
+		for (int i = 0; i < placa -> altura; i++)
+		{
+			for (int k = 0; k < placa -> largura; k++)
+			{
+				if (placa -> data[i][k] == '@')
+				{
+					placa -> data[i][k] = ' ';
+					move(placa -> linha + i + 3, placa -> coluna +k);
+					printw("@");
+				}
+			}
+		}
+		char pos;
+		for (int t = 0; t < tlin; t++)
+		{
+			for (int y = 0; y < tcol; y++)
+			{
+				pos = mvinch(t, y);
+
+				if (pos == '@')
+				{
+					move(t+1, y);
+					printw("@");
+				}
+
+			}
+		}
+
 
 		srand(time(NULL));
 		int r = rand() % 2;
 		if (r == 1)
 		{
-			alien_atira(obj, placa);
+			alien_atira(obj, placa, number);
 		}
 		
 		if (placa -> numero_aliens == 0)
@@ -193,11 +219,44 @@ int main()
 			contador++;
 	}
 
+	if (!ganhou)
+		break;
+	else
+	{
+		clear();
+		printw(" _____  ___    _______  ___  ___  ___________      ___       _______  ___      ___  _______  ___     \n");
+		printw("(\\\"   \\|\"  \\  /\"     \"||\"  \\/\"  |(\"     _   \")    |\"  |     /\"     \"||\"  \\   /\"  |/\"     \"||\"  |  \n");
+		printw("|.\\     \\   |(: ______) \\  \\  	 /  )__/  \\__/    ||  |    (: ______) \\  \\ //  /(: ______)||  |    \n");
+		printw("|: \\     \\  | \\/    |    \\  \\	  /      \\_ /     |:  |     \\/    |    \\  \\/. ./  \\/    |  |:  |     \n");
+		printw("|.  \\    \\. | // ___)_   /\\.  \\      |.  |         \\  |___  // ___)_    \\.    //   // ___)_  \\  |___  \n");
+		printw("|    \\    \\ |(:      \"| /  \\  \\     \\:  |        ( \\_|:  \\(:      \"|    \\   /   (:      \"|( \\_|:  \\  \n");
+		printw(" \\___|\\____\\) \\_______)|___/\\___|     \\__|         \\_______)\\_______)     \\__/     \\_______) \\_______)\n");
+		refresh();
+		sleep(4);
+
+	}
+}
+
+	
+
+
+
+	//imprime_lista(obj);
+
+	//==sleep(2);
+
 
 	/* Desaloca o que for necessário */
 	free(m);
 	free(obj);
 	free(placa);
+	free(obj);
+	/*for (int i = 0; i < lin; i++)
+	{
+		free(m -> data[i]);
+	}
+	free(m -> data);
+	free(m);*/
 	/*Desalocar placa*/
 	/*Desalocar mapa*/
 
@@ -219,18 +278,7 @@ int main()
 		printw(" \\   \\ .'   `--''          |   ;/          |   | ,'              `---`           '---\" |   | ,'  |   |.'            \n");
 		printw("  `---`                    '---'           `----'                                      `----'    `---'              \n");
 	}
-	else
-	{
-		printw(" _____  ___    _______  ___  ___  ___________      ___       _______  ___      ___  _______  ___     \n");
-		printw("(\\\"   \\|\"  \\  /\"     \"||\"  \\/\"  |(\"     _   \")    |\"  |     /\"     \"||\"  \\   /\"  |/\"     \"||\"  |  \n");
-		printw("|.\\     \\   |(: ______) \\  \\  /  )__/  \\__/     ||  |    (: ______) \\  \\ //  /(: ______)||  |    \n");
-		printw("|: \\     \\  | \\/    |    \\  \\/      \\_ /        |:  |     \\/    |    \\  \\/. ./  \\/    |  |:  |     \n");
-		printw("|.  \\    \\. | // ___)_   /\\.  \\      |.  |         \\  |___  // ___)_    \\.    //   // ___)_  \\  |___  \n");
-		printw("|    \\    \\ |(:      \"| /  \\  \\     \\:  |        ( \\_|:  \\(:      \"|    \\   /   (:      \"|( \\_|:  \\  \n");
-		printw(" \\___|\\____\\) \\_______)|___/\\___|     \\__|         \\_______)\\_______)     \\__/     \\_______) \\_______)\n");
-
-		/* Finaliza as alterações do ncurses */
-	}
+	
 	refresh();
 	sleep(6);
 	getch();

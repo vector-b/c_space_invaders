@@ -68,7 +68,7 @@ void busca_tiro(mapa *m);
 
 void busca_tiro_alien(mapa *m, int right);
 
-void alien_atira(t_lista *l , placa_a *p);
+void alien_atira(t_lista *l , placa_a *p, int number);
 
 int chocou(placa_a *p, t_lista *l, mapa *m);
 
