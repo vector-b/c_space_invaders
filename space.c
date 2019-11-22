@@ -259,6 +259,7 @@ void atualiza_tiro(t_fila *f)
 	aux = f -> begin;
 	while(aux != NULL)
 	{
+		printw("	CORONO	" );
 		aux -> lin++;
 		aux = aux -> next;
 	}
@@ -270,6 +271,7 @@ void imprime_tiro(t_fila *f)
 	while(aux != NULL)
 	{
 		move(aux -> lin, aux -> col);
+		printw("  %d  %d \n",aux -> lin, aux -> col );
 		printw("@");
 		aux = aux -> next;
 	}

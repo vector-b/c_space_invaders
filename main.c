@@ -62,6 +62,8 @@ while(dificuldade > 0)
 
 	tiros_alien = malloc(sizeof(tiros));
 
+	tiros_alien -> size = 0;
+
 	int temporizador = 1;
 	
 	/* Inicia o canhão */
@@ -116,6 +118,7 @@ while(dificuldade > 0)
 		{
 			alien_atira(obj, placa, number,tiros_alien);
 		}
+		printw("    %d \n",tiros_alien -> size );
 		atualiza_tiro(tiros_alien);
 		imprime_tiro(tiros_alien);
 		
