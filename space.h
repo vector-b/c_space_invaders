@@ -29,9 +29,9 @@ typedef struct tiro
 }tiro;
 typedef struct t_fila
 {
-     struct nodo *begin;
-     struct nodo *end;
-     int tam;
+     struct tiro *begin;
+     struct tiro *end;
+     int size;
 }t_fila;
 typedef struct mapa
 {   
@@ -50,6 +50,9 @@ typedef struct placa_alienigiena
     int numero_aliens;
 
 }placa_a;
+
+int enfileira(int lin, int col, t_fila *f);
+
 
 int cria_lista(t_lista *l);
 int lista_vazia(t_lista *l);
@@ -78,9 +81,13 @@ void atirar(t_nodo *n, mapa *m);
 
 void busca_tiro(mapa *m);
 
+void atualiza_tiro(t_fila *f);
+
+void imprime_tiro(t_fila *f);
+
 void busca_tiro_alien(mapa *m, int right);
 
-void alien_atira(t_lista *l , placa_a *p, int number);
+void alien_atira(t_lista *l , placa_a *p, int number, t_fila *f);
 
 int chocou(placa_a *p, t_lista *l, mapa *m);
 

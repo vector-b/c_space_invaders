@@ -5,7 +5,7 @@ int enfileira(int lin, int col, t_fila *f)
 {
         tiro *y;
         tiro *novo;
-        novo = malloc(sizeof(novo));
+        novo = malloc(40*sizeof(novo));
         if (!novo)
         {
            if (f -> end == NULL)
@@ -13,5 +13,15 @@ int enfileira(int lin, int col, t_fila *f)
                 f -> begin = novo;
                 f -> end = novo;
            }
+           else
+           {
+                y = f -> end;
+                y -> next = novo;
+                f -> end = novo;
+           }
+           novo -> next = NULL;
+           novo -> lin = lin;
+           novo -> col = col;
         }
+        f -> size++;
 }
