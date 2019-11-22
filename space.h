@@ -21,6 +21,18 @@ struct t_lista {
 };
 typedef struct t_lista t_lista;
 
+typedef struct tiro
+{
+    struct tiro *next;
+    int lin;
+    int col;
+}tiro;
+typedef struct t_fila
+{
+     struct nodo *begin;
+     struct nodo *end;
+     int tam;
+}t_fila;
 typedef struct mapa
 {   
     char **data;

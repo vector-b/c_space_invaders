@@ -49,7 +49,10 @@ int main()
 
 	t_lista *obj;
 	obj  = malloc(sizeof(obj));
-	
+
+	t_fila *tiros_alien;
+	tiros_alien = malloc(sizeof(tiros));
+
 	int dificuldade = 6;
 
 while(dificuldade > 0)
