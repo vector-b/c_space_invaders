@@ -11,6 +11,7 @@ int main()
 	int score = 0;
 	int i,j,right,changed;
 	int ganhou = 1;
+	int last = 0;
 
 
 	//system("mpg123 lavender.mp3 &");
@@ -31,6 +32,7 @@ int main()
 	lin = 37;
 	col = 150;
 
+
 	if (tlin < 37 || tcol < 150)
 	{
 		endwin();
@@ -50,7 +52,7 @@ int main()
 	
 	int dificuldade = 6;
 
-while(1)
+while(dificuldade > 0)
 {
 
 	int temporizador = 1;
@@ -172,20 +174,20 @@ while(1)
 		if (temporizador % dificuldade == 0)
 		{
 
-		if (m -> data[(placa -> linha)+ (placa -> altura)][(placa -> coluna) + (placa -> largura)] == '|')
-		{
-			right = 0;
-			changed = 1;
-			deletetop(m,placa);
-			deletecolumn(m,placa,&right);
-		}
-		else if (m -> data[(placa -> linha) -1 ][(placa -> coluna) - 1] == '|')
-		{
-			right = 1;
-			changed = 1;
-			deletetop(m,placa);
-			deletecolumn(m,placa,&right);
-		}
+			if (m -> data[(placa -> linha)+ (placa -> altura)][(placa -> coluna) + (placa -> largura)] == '|')
+			{
+				right = 0;
+				changed = 1;
+				deletetop(m,placa);
+				deletecolumn(m,placa,&right);
+			}
+			else if (m -> data[(placa -> linha) -1 ][(placa -> coluna) - 1] == '|')
+			{
+				right = 1;
+				changed = 1;
+				deletetop(m,placa);
+				deletecolumn(m,placa,&right);
+			}
 
 			if (right)
 				placa -> coluna++;
@@ -240,21 +242,36 @@ while(1)
 
 		temporizador++;
 	}
-
+	dificuldade--;
 	if (!ganhou)
 		break;
 	else
 	{
-		clear();
-		printw("/\\ \"-.\\ \\   /\\  ___\\   /\\_\\_\\_\\   /\\__  _\\    /\\ \\       /\\  ___\\   /\\ \\ / /  /\\  ___\\   /\\ \\       \n");
-		printw("\\ \\ \\-.  \\  \\ \\  __\\   \\/_/\\_\\/_  \\/_/\\ \\/    \\ \\ \\____  \\ \\  __\\   \\ \\ \' /   \\ \\  __\\   \\ \\ \\____  \n");
-		printw(" \\  \\_\\\"\\_\\  \\ \\_____\\   /\\_\\/\\_\\    \\ \\_\\     \\ \\_____\\  \\ \\_____\\  \\ \\__|    \\ \\_____\\  \\ \\_____\n");
-		printw("  \\/_/ \\/_/   \\/_____/   \\/_/\\/_/     \\/_/      \\/_____/   \\/_____/   \\/_/      \\/_____/   \\/_____/ \n");
-		refresh();
-		sleep(4);
+		if (dificuldade != 0)
+		{
+			clear();
+			printw("/\\ \"-.\\ \\   /\\  ___\\   /\\_\\_\\_\\   /\\__  _\\    /\\ \\       /\\  ___\\   /\\ \\ / /  /\\  ___\\   /\\ \\       \n");
+			printw("\\ \\ \\-.  \\  \\ \\  __\\   \\/_/\\_\\/_  \\/_/\\ \\/    \\ \\ \\____  \\ \\  __\\   \\ \\ \' /   \\ \\  __\\   \\ \\ \\____  \n");
+			printw(" \\  \\_\\\"\\_\\  \\ \\_____\\   /\\_\\/\\_\\    \\ \\_\\     \\ \\_____\\  \\ \\_____\\  \\ \\__|    \\ \\_____\\  \\ \\_____\n");
+			printw("  \\/_/ \\/_/   \\/_____/   \\/_/\\/_/     \\/_/      \\/_____/   \\/_____/   \\/_/      \\/_____/   \\/_____/ \n");
+			refresh();
+			sleep(4);
+		}
+		
 
 	}
-	dificuldade--;
+	
+	if (dificuldade == 0)
+	{
+		clear();
+		printw("  __  __     ______     __  __        __     __     __     __   __       \n");
+		printw(" /\\ \\_\\ \\   /\\  __ \\   /\\ \\/\\ \\      /\\ \\  _ \\ \\   /\\ \\   /\\ \"-.\\ \\     \n ");
+		printw("\\ \\___\\ \\  \\ \\/\\ \\ \\  \\   \\_\\ \\     \\ \\ \\/ \".\\ \\  \\ \\ \\  \\ \\ \\-.  \\     \n");
+		printw("  \\/\\_____\\  \\ \\_____\\  \\ \\_____\\     \\ \\__/\".~\\_\\  \\ \\_\\  \\ \\_\\ \"\\_\\   \n ");	
+		printw("  \\/_____/   \\/_____/   \\/_____/      \\/_/   \\/_/   \\/_/   \\/_/ \\/_/ \n");
+		refresh();
+		sleep(8);
+	}
 }
 
 	
