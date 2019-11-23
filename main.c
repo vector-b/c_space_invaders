@@ -12,6 +12,7 @@ int main()
 	int i,j,right,changed;
 	int ganhou = 1;
 	int last = 0;
+	int canhao_atingido = 0;
 
 
 	//system("mpg123 lavender.mp3 &");
@@ -63,6 +64,11 @@ while(dificuldade > 0)
 	obj -> begin = NULL;
 
 
+	tiros_alien = malloc(sizeof(tiros));
+
+	tiros_alien -> size = 0;
+
+
 
 
 
@@ -108,23 +114,25 @@ while(dificuldade > 0)
 	while (ganhou) /*ganhou, perdeu ou apertou esc*/
 	{
 
-		tiros_alien = malloc(sizeof(tiros));
-
-		tiros_alien -> size = 0;
-
-		imprime_fila(tiros_alien);
 
 		diminui_placa(obj,placa);
 
-		imprime_fila(tiros_alien);
+		srand(time(NULL));
+		int r = rand() % 2;
 
-		tiros_alien = alien_atira(obj, placa, number,tiros_alien);
+		if (r == 1)
+		{
+			tiros_alien = alien_atira(obj, placa, number,tiros_alien);
+		}
 
-		
-		printw("    %d \n",tiros_alien -> size );
-		//atualiza_tiro(tiros_alien);
-		//imprime_tiro(tiros_alien);
-		
+		imprime_tiro(tiros_alien);
+
+		atualiza_tiro(tiros_alien, obj, &canhao_atingido);
+
+		if (canhao_atingido)
+		{
+			ganhou = 0;
+		}
 		if (placa -> numero_aliens == 0)
 			break;
 
@@ -138,6 +146,14 @@ while(dificuldade > 0)
 			t_nodo *aux;
 			aux = obj -> end;
 			aux -> col++;
+			if (aux -> col == 150)
+			{
+				aux -> col = 2;
+				mae = 0;
+				contador++;
+			}
+
+
 		}
 		if (contador % 120  == 0)
 		{
@@ -161,6 +177,7 @@ while(dificuldade > 0)
 
 		if (temporizador % dificuldade == 0)
 		{
+
 
 			if (m -> data[(placa -> linha)+ (placa -> altura)][(placa -> coluna) + (placa -> largura)] == '|')
 			{
@@ -229,6 +246,9 @@ while(dificuldade > 0)
 			contador++;
 
 		temporizador++;
+
+
+
 	}
 	dificuldade--;
 	free(obj);

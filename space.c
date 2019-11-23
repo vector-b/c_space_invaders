@@ -245,20 +245,41 @@ t_fila  *alien_atira(t_lista *l , placa_a *p, int number, t_fila *f)
 		}
 		else
 		{
-			enfileira(p -> linha + chose -> lin + chose -> alt + 2, p -> coluna + chose -> col + chose -> larg/2, f);
+			enfileira(p -> linha + chose -> lin + chose -> alt, p -> coluna + chose -> col + chose -> larg/2, f);
 		}
 		
 	}
 	/* TEM QUE ARRUMAR O NUMERO DE ALIENS NO NUMBER, OU SEJA ACERTAR O MESMO NUMERO POR LINHAS */
 	return f;
 }
-void atualiza_tiro(t_fila *f)
+void atualiza_tiro(t_fila *f, t_lista *l, int *canhao)
 {
 	tiro *aux;
 	aux = f -> begin;
+	t_nodo *n = l -> begin;
 	while(aux != NULL)
 	{
-		printw("	CORONO	" );
+		
+		if (aux -> lin < 37)
+		{
+			move(aux -> lin -1, aux -> col);
+			printw(" ");
+		}
+		
+		for (int k = n -> lin ; k < n -> lin +  n -> alt - 1 ; k++)
+		{
+			if (aux -> lin == k)
+			{
+				for (int i = n -> col; i < n -> col + n -> larg - 1; i++)
+				{
+					if (aux -> col == i)
+					{
+						*canhao = 1;
+					}
+				}
+			}
+		}
+		
 		aux -> lin++;
 		aux = aux -> next;
 	}
@@ -269,9 +290,14 @@ void imprime_tiro(t_fila *f)
 	aux = f -> begin;
 	while(aux != NULL)
 	{
-		move(aux -> lin, aux -> col);
-		printw("  %d  %d \n",aux -> lin, aux -> col );
-		printw("@");
+
+		if (aux -> lin < 37)
+		{
+
+			move(aux -> lin, aux -> col);
+			printw("@");
+		}
+		
 		aux = aux -> next;
 	}
 }
@@ -562,8 +588,6 @@ void diminui_placa(t_lista *l, placa_a *p)
 			a2++;
 		n = n -> next;
 	}
-	move(2,20);
-	printw("%d %d", a4, a3);
 	if (a4 == 0)
 	{
 		p -> altura = 10 ;
@@ -634,7 +658,6 @@ void atinge_mae(t_lista *l, mapa *m, int *score, int *mae)
 
 
 					*score += 200;
-					printf("hitou\n");
 				}
 		}
 	}

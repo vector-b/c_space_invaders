@@ -82,7 +82,7 @@ void atirar(t_nodo *n, mapa *m);
 
 void busca_tiro(mapa *m);
 
-void atualiza_tiro(t_fila *f);
+void atualiza_tiro(t_fila *f, t_lista *l, int *canhao);
 
 void imprime_tiro(t_fila *f);
 
