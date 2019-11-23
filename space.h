@@ -52,6 +52,7 @@ typedef struct placa_alienigiena
 }placa_a;
 
 int enfileira(int lin, int col, t_fila *f);
+void imprime_fila(t_fila *f);
 
 
 int cria_lista(t_lista *l);
@@ -87,7 +88,7 @@ void imprime_tiro(t_fila *f);
 
 void busca_tiro_alien(mapa *m, int right);
 
-void alien_atira(t_lista *l , placa_a *p, int number, t_fila *f);
+t_fila  *alien_atira(t_lista *l , placa_a *p, int number, t_fila *f);
 
 int chocou(placa_a *p, t_lista *l, mapa *m);
 

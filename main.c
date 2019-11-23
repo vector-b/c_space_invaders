@@ -60,9 +60,12 @@ while(dificuldade > 0)
 
 	obj  = malloc(sizeof(obj));
 
-	tiros_alien = malloc(sizeof(tiros));
+	obj -> begin = NULL;
 
-	tiros_alien -> size = 0;
+
+
+
+
 
 	int temporizador = 1;
 	
@@ -105,22 +108,22 @@ while(dificuldade > 0)
 	while (ganhou) /*ganhou, perdeu ou apertou esc*/
 	{
 
-		diminui_placa(obj,placa);
-		/*for (i = 0; i < placa -> largura; i++)
-		{
-		placa -> data[0][i] = '-';
-		placa -> data[placa -> altura - 1][i] = '-';
-		}*/
-		srand(time(NULL));
-		int r = rand() % 2;
+		tiros_alien = malloc(sizeof(tiros));
 
-		if (r == 1)
-		{
-			alien_atira(obj, placa, number,tiros_alien);
-		}
+		tiros_alien -> size = 0;
+
+		imprime_fila(tiros_alien);
+
+		diminui_placa(obj,placa);
+
+		imprime_fila(tiros_alien);
+
+		tiros_alien = alien_atira(obj, placa, number,tiros_alien);
+
+		
 		printw("    %d \n",tiros_alien -> size );
-		atualiza_tiro(tiros_alien);
-		imprime_tiro(tiros_alien);
+		//atualiza_tiro(tiros_alien);
+		//imprime_tiro(tiros_alien);
 		
 		if (placa -> numero_aliens == 0)
 			break;

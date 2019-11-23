@@ -216,9 +216,9 @@ void imprime_barreiras(mapa *m,t_nodo *n)
 	}	
 }
 
-void alien_atira(t_lista *l , placa_a *p, int number, t_fila *f)
+t_fila  *alien_atira(t_lista *l , placa_a *p, int number, t_fila *f)
 {
-	
+
 	t_nodo *aux;
 	t_nodo *chose;
 	chose = NULL;
@@ -239,19 +239,18 @@ void alien_atira(t_lista *l , placa_a *p, int number, t_fila *f)
 	}
 	if (chose != NULL)
 	{
-		//printf("%d %d\n",chose -> lin, chose -> unity );
 		if (chose -> type == 2)
 		{
-				enfileira(p -> linha + chose -> lin + chose -> alt + 2, p -> coluna + chose -> col + chose -> larg/2, f);
+			enfileira(p -> linha + chose -> lin + chose -> alt, p -> coluna + chose -> col + chose -> larg/2, f);
 		}
 		else
 		{
-				enfileira(p -> linha + chose -> lin + chose -> alt, p -> coluna + chose -> col + chose -> larg/2, f);
-
-		}	
+			enfileira(p -> linha + chose -> lin + chose -> alt + 2, p -> coluna + chose -> col + chose -> larg/2, f);
+		}
+		
 	}
 	/* TEM QUE ARRUMAR O NUMERO DE ALIENS NO NUMBER, OU SEJA ACERTAR O MESMO NUMERO POR LINHAS */
-	
+	return f;
 }
 void atualiza_tiro(t_fila *f)
 {
