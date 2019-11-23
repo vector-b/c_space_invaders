@@ -20,19 +20,7 @@ int lista_vazia(t_lista *l)
 		return 0;
 	return 0;
 }
-/*Destroi a lista caso ela nao seja nula*/
-/*void destroi_lista(t_lista *l)
-{
-	if ((l -> ini) != NULL)
-	{
-		t_nodo *aux =  l -> begin;
-		l -> begin = l -> ini -> next;
-		free(aux);
-		destroi_lista(l);
-		/*recursao responsavel por percorrer toda a lista
-	}
-	l -> tamanho = 0;
-}*/
+
 /*Insere no começo da lista, pelo ini*/
 int insere_fim_lista(int type, int lin, int col, int al, int la, int state, int unity, t_lista *l)
 {
@@ -77,7 +65,6 @@ void imprime_lista(t_lista *l)
 
 int remove_nodo(t_lista *l, t_nodo *n)
 {
-	t_nodo *aux;
 	if (n -> next != NULL)
 	{
 		n -> prev -> next = n -> next;
@@ -89,32 +76,5 @@ int remove_nodo(t_lista *l, t_nodo *n)
 		n -> prev -> next = NULL;
 	}
 	l -> size--;
+	return 1 ;
 }
-/*Insere no no final da lista*/
-/*int insere_fim_lista(int x, t_lista *l)
-{
-	t_nodo *aux;
-	t_nodo *nodo;
-	nodo = malloc(sizeof(nodo));
-
-	if (!nodo)
-		return 0;
-
-	aux = l -> ini;
-	if (aux == NULL)
-	{
-
-		nodo -> chave = x;
-		nodo -> prox = NULL;
-		l -> ini = nodo;
-	}
-	else
-	{
-		while((aux -> prox) != NULL)
-			aux = aux -> prox;
-		nodo -> chave = x;
-		nodo -> prox = NULL;
-		aux -> prox = nodo;
-	}
-	return 1;
-}*/

@@ -74,7 +74,6 @@ placa_a *inicia_placa(t_lista *l,placa_a *p, int lin, int col)
 	int cont2 = 0;
 	for (i = 3; i < p -> largura - 5 ; i+= 7)
 	{
-		int cont = 1;
 		gera_alien(l,p,6,i,2,++cont2);
 		p -> numero_aliens++;
 	}
@@ -82,14 +81,13 @@ placa_a *inicia_placa(t_lista *l,placa_a *p, int lin, int col)
 	int cont3 = 0;
 	for (i = 3; i < p -> largura - 5 ; i+= 7)
 	{
-		int cont = 1;
 		gera_alien(l,p,12,i,3,++cont3);
 		p -> numero_aliens++;
 	}
 	return p;
 }
 
-void *inicia_canhao(t_lista *l, mapa *m)
+void inicia_canhao(t_lista *l, mapa *m)
 {
 	int i,k;
 	t_nodo *canhao;
@@ -135,12 +133,13 @@ void surge_nave(t_lista *l, mapa *m)
 }
 void inicia_nave(t_lista *l)
 {
+	int i;
 	t_nodo *aux;
 	aux = l -> end;
 	aux -> lin = 2;
 	aux -> col = 2;
 	aux -> data = malloc(3*sizeof(aux -> data));
-	for (int i = 0; i < 3; i++)
+	for (i = 0; i < 3; i++)
 	{
 		aux -> data[i] = malloc(9*sizeof(aux -> data));
 	}
@@ -175,10 +174,11 @@ void inicia_nave(t_lista *l)
 }
 void inicia_barreira(t_lista *l)
 {
+	int i;
 	t_nodo *aux;
 	aux = l -> end;
 	aux -> data = malloc(3*sizeof(aux -> data));
-	for (int i = 0; i < 3; i++)
+	for (i = 0; i < 3; i++)
 	{
 		aux -> data[i] = malloc(7*sizeof(aux -> data));
 	}
@@ -224,7 +224,6 @@ t_fila  *alien_atira(t_lista *l , placa_a *p, int number, t_fila *f, int *seed)
 	t_nodo *chose;
 	chose = NULL;
 	aux = l -> begin;
-	int tam = 0;
 	srand(time(NULL));
 	int r = ((*seed * rand()) % (number))+1;
 	/* Sorteia um número de aliens por coluna para atirar */
@@ -256,6 +255,7 @@ t_fila  *alien_atira(t_lista *l , placa_a *p, int number, t_fila *f, int *seed)
 }
 void atualiza_tiro(t_fila *f, t_lista *l, int *canhao, mapa *m)
 {
+	int i,k;
 	tiro *aux;
 	aux = f -> begin;
 	t_nodo *n = l -> begin;
@@ -270,11 +270,11 @@ void atualiza_tiro(t_fila *f, t_lista *l, int *canhao, mapa *m)
 		else
 			desenfileira(f);
 		
-		for (int k = n -> lin ; k < n -> lin +  n -> alt - 1 ; k++)
+		for (k = n -> lin ; k < n -> lin +  n -> alt - 1 ; k++)
 		{
 			if (aux -> lin == k)
 			{
-				for (int i = n -> col; i < n -> col + n -> larg - 1; i++)
+				for (i = n -> col; i < n -> col + n -> larg - 1; i++)
 				{
 					if (aux -> col == i)
 					{
@@ -290,9 +290,9 @@ void atualiza_tiro(t_fila *f, t_lista *l, int *canhao, mapa *m)
 		{
 			if(p -> type == 5)
 			{
-				for (int i = p -> lin; i < p -> lin + p -> alt ; i++)
+				for (i = p -> lin; i < p -> lin + p -> alt ; i++)
 				{
-					for (int k = p -> col ; k < p -> col + p -> larg; k++)
+					for (k = p -> col ; k < p -> col + p -> larg; k++)
 					{
 						if (aux -> lin == i)
 						{
@@ -391,6 +391,7 @@ int chocou(placa_a *p, t_lista *l, mapa *m)
 	{
 		remove_barreira(l,m);
 	}
+	return 1;
 }
 void transicao(mapa *m, placa_a *p)
 {
@@ -435,7 +436,7 @@ void deletecolumn(mapa *m, placa_a *p, int *right)
 }
 void deletetop(mapa *m, placa_a *p)
 {
-	
+	/* Caso a placa desça, delete a linha de cima */
 	int i,k;
 	p -> linha++;
 	for (i = 0; i < p -> altura; i++)
@@ -451,10 +452,12 @@ void deletetop(mapa *m, placa_a *p)
 }
 void atirar(t_nodo *n,mapa *m)
 {
+	/* Tiro do canhão */
 	m -> data[n -> lin -1][n -> col+2] = 'o';
 }
 void busca_tiro(mapa *m)
 {
+	/* Procura por tiros do canhão e faz com que subam */
 	int i,k;
 	for (i = 2; i <  m -> linhas - 2; i++)
 	{
@@ -469,32 +472,10 @@ void busca_tiro(mapa *m)
 		}
 	}
 }
-void busca_tiro_alien(mapa *m, int right)
-{
-	int i,k;
-	for (i =  m -> linhas - 1 ; i > 5 ; i--)
-	{
-		for (k = m -> colunas; k > 2; k--)
-		{
-			if (m -> data[i][k] ==  '@')
-			{
-				m -> data[i-1][k] = ' ';
-				m -> data[i][k] = ' ';
-				if (i < m -> linhas - 3)
-				{
-					if (right)
-						m -> data[i+1][k + 1] = '@';
-					else
-						m -> data[i+1][k - 1] = '@';
-				}
-				
-			}
 
-		}
-	}
-}
 void entra_tiro(mapa *m, placa_a *p)
 {
+	/* Faz com que os tiros do mapa entrem na placa */ 
 	int i,k;
 	for (i = 0; i < p -> largura; i++)
 	{
@@ -520,6 +501,8 @@ void entra_tiro(mapa *m, placa_a *p)
 }
 void sai_tiro(mapa *m, placa_a *p)
 {
+
+	/* Os tiros da placa saem pro mapa, por cima */
 	int i;
 	for (i = 0; i < p -> largura; i++)
 	{
@@ -533,6 +516,7 @@ void sai_tiro(mapa *m, placa_a *p)
 }
 void busca_tiro_placa(placa_a *p, int dir, int *changed, int mod)
 {
+	/* Encontra os tiros dentro da placa e mandam pra cima */
 	int i,k;
 	for (i = 0; i <  p -> altura ; i++)
 	{
@@ -573,14 +557,12 @@ void busca_tiro_placa(placa_a *p, int dir, int *changed, int mod)
 		
 		}
 	}
-	int j, f;
-	j = 0;
-	f = 0;
 	
-
 }
 void imprime_canhao(t_nodo *n, mapa *m)
 {
+	/* Imprime o canhão no mapa */
+
 	int i,k;
 	for (i = 0; i < 5; i++)
 	{
@@ -625,6 +607,7 @@ void diminui_placa(t_lista *l, placa_a *p)
 }
 void atinge_alien(t_lista *l, placa_a *p, int *score)
 {
+	/* Atinge o alien e pontua conforme a unidade atingida */
 	int i,k;
 	t_nodo *n;
 	n = l -> begin;
@@ -662,9 +645,10 @@ void atinge_alien(t_lista *l, placa_a *p, int *score)
 }
 void atinge_mae(t_lista *l, mapa *m, int *score, int *mae)
 {
+	/* Atinge a nave mãe e pontua */
 	if (*mae)
 	{
-		int i,k;
+		int i;
 		int j,p;
 		t_nodo *n;
 		n = l -> end;
@@ -693,6 +677,7 @@ void atinge_mae(t_lista *l, mapa *m, int *score, int *mae)
 
 void busca_e_remove(t_lista *l, placa_a *p)
 {
+	/* Busca o alien a ser removido e remove */
 	t_nodo *n;
 	t_nodo *aux;
 	int i,k;
@@ -757,13 +742,14 @@ void remove_barreira(t_lista *l, mapa *m)
 }
 int atinge_canhao(t_lista *l, placa_a *p , mapa *m)
 {
-	
+	/* verifica se atingiu o canhao */
 	if ((p -> linha +  p -> altura - 1) == m -> linhas - 4 )
 		return 1;
 	return 0;
 }
 void limpa_topo(mapa *m)
 {
+	/* limpa a linha onde os tiros se encontram no topo */
 	int i;
 	for (i = 1; i < m -> colunas; i++)
 	{

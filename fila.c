@@ -26,6 +26,7 @@ int enfileira(int lin, int col, t_fila *f)
            novo -> col = col;
 
         f -> size++;
+        return 1;
 }
 void imprime_fila(t_fila *f)
 {

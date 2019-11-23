@@ -1,4 +1,10 @@
-objects = jogo.o
-# regras de compilação
-jogo.o: main.c 
-	gcc -o jogo main.c lista.c fila.c space.c -Wall -ansi  -lncurses -g 
+CC=gcc
+CFLAGS=-Wall -ansi
+DEPS = space.c lista.c fila.c
+OBJ = space_invaders.o  
+
+%.o: %.c $(DEPS)
+	$(CC) -o $@ $< $(CFLAGS)
+
+space_invaders: $(OBJ)
+	$(CC) -o $(DEPS) $(CFLAGS)

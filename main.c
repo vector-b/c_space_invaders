@@ -14,7 +14,6 @@ int main()
 	/*Inicialização das variaveis */
 	score = 0;
 	ganhou = 1;
-	last = 0;
 	canhao_atingido = 0;
 	co = 0;
 	contador = 1;

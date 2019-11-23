@@ -51,12 +51,14 @@ typedef struct placa_alienigiena
 
 }placa_a;
 
+/* Funções de manipulação da Fila */
+
 int enfileira(int lin, int col, t_fila *f);
 void imprime_fila(t_fila *f);
 int desenfileira(t_fila *f);
 
 
-
+/* Funções de manipulação da lista */
 int cria_lista(t_lista *l);
 int lista_vazia(t_lista *l);
 void destroi_lista(t_lista *l);
@@ -64,11 +66,12 @@ int insere_fim_lista(int type, int lin, int col, int al, int la, int state, int 
 void imprime_lista(t_lista *l);
 int remove_nodo(t_lista *l, t_nodo *n);
 
+/* Funções de manipulação das matrizes e objetos do jogo */
 placa_a *inicia_placa(t_lista *l,placa_a *p, int lin, int col);
 
 mapa *inicia_mapa(mapa *m, int lin, int col);
 
-void *inicia_canhao(t_lista *l, mapa *m);
+void inicia_canhao(t_lista *l, mapa *m);
 
 void inicia_nave(t_lista *l);
 
@@ -87,8 +90,6 @@ void busca_tiro(mapa *m);
 void atualiza_tiro(t_fila *f, t_lista *l, int *canhao, mapa *m);
 
 void imprime_tiro(t_fila *f);
-
-void busca_tiro_alien(mapa *m, int right);
 
 t_fila  *alien_atira(t_lista *l , placa_a *p, int number, t_fila *f, int *seed);
 
@@ -123,9 +124,3 @@ void imprime_barreiras(mapa *m,t_nodo *n);
 int atinge_canhao(t_lista *l, placa_a *p , mapa *m);
 
 void limpa_topo(mapa *m);
-/*int insere_fim_lista(int x, t_lista *l);
-int insere_ordenado_lista(int x, t_lista *l);
-
-int remove_primeiro_lista(int *item, t_lista *l);
-int remove_ultimo_lista(int *item, t_lista *l);
-int remove_item_lista(int chave, int *item, t_*/
