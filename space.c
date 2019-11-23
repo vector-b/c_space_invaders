@@ -216,7 +216,7 @@ void imprime_barreiras(mapa *m,t_nodo *n)
 	}	
 }
 
-t_fila  *alien_atira(t_lista *l , placa_a *p, int number, t_fila *f)
+t_fila  *alien_atira(t_lista *l , placa_a *p, int number, t_fila *f, int *seed)
 {
 
 	t_nodo *aux;
@@ -225,7 +225,7 @@ t_fila  *alien_atira(t_lista *l , placa_a *p, int number, t_fila *f)
 	aux = l -> begin;
 	int tam = 0;
 	srand(time(NULL));
-	int r = (rand() % (number))+1;
+	int r = ((*seed * rand()) % (number))+1;
 	while(aux != NULL)
 	{
 		if ((aux -> type >= 2) && (aux -> type <= 4))
@@ -252,7 +252,7 @@ t_fila  *alien_atira(t_lista *l , placa_a *p, int number, t_fila *f)
 	/* TEM QUE ARRUMAR O NUMERO DE ALIENS NO NUMBER, OU SEJA ACERTAR O MESMO NUMERO POR LINHAS */
 	return f;
 }
-void atualiza_tiro(t_fila *f, t_lista *l, int *canhao)
+void atualiza_tiro(t_fila *f, t_lista *l, int *canhao, mapa *m)
 {
 	tiro *aux;
 	aux = f -> begin;
@@ -265,6 +265,8 @@ void atualiza_tiro(t_fila *f, t_lista *l, int *canhao)
 			move(aux -> lin -1, aux -> col);
 			printw(" ");
 		}
+		else
+			desenfileira(f);
 		
 		for (int k = n -> lin ; k < n -> lin +  n -> alt - 1 ; k++)
 		{
@@ -278,6 +280,33 @@ void atualiza_tiro(t_fila *f, t_lista *l, int *canhao)
 					}
 				}
 			}
+		}
+
+		t_nodo *p;
+		p = l -> begin;
+		while(p != NULL)
+		{
+			if(p -> type == 5)
+			{
+				for (int i = p -> lin; i < p -> lin + p -> alt ; i++)
+				{
+					for (int k = p -> col ; k < p -> col + p -> larg; k++)
+					{
+						if (aux -> lin == i)
+						{
+							if (aux -> col == k)
+							{
+								if (m -> data[i][k] != ' ')
+								{
+									m -> data[i][k] = ' ';
+									desenfileira(f);
+								}
+							}
+						}
+					}
+				}
+			}
+			p = p -> next;
 		}
 		
 		aux -> lin++;
@@ -381,14 +410,12 @@ void tiros(t_lista *l,placa_a *p, mapa *m, int right, int *changed, int *score, 
 
 	sai_tiro(m, p);
 
-	busca_tiro_alien(m, right);
 
 	busca_tiro_placa(p, right, changed, mod);
 
 
 	atinge_mae(l, m, score, mae);
 
-	//busca_tiro_alien_placa(p, right, changed);
 
 }
 void deletecolumn(mapa *m, placa_a *p, int *right)

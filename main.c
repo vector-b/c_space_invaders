@@ -13,7 +13,9 @@ int main()
 	int ganhou = 1;
 	int last = 0;
 	int canhao_atingido = 0;
+	int co = 0;
 
+	int limitador = 21;
 
 	//system("mpg123 lavender.mp3 &");
 	/* Inicialização dos recursos ncurses */
@@ -58,6 +60,7 @@ int main()
 
 while(dificuldade > 0)
 {
+	co = 0;
 
 	obj  = malloc(sizeof(obj));
 
@@ -114,20 +117,13 @@ while(dificuldade > 0)
 	while (ganhou) /*ganhou, perdeu ou apertou esc*/
 	{
 
+		int seed = 0;
 
 		diminui_placa(obj,placa);
 
-		srand(time(NULL));
-		int r = rand() % 2;
-
-		if (r == 1)
-		{
-			tiros_alien = alien_atira(obj, placa, number,tiros_alien);
-		}
-
 		imprime_tiro(tiros_alien);
 
-		atualiza_tiro(tiros_alien, obj, &canhao_atingido);
+		atualiza_tiro(tiros_alien, obj, &canhao_atingido,m);
 
 		if (canhao_atingido)
 		{
@@ -173,6 +169,23 @@ while(dificuldade > 0)
 
 		clear();
 
+
+		if (co % limitador == 0)
+		{
+			srand(time(NULL));
+			int r = rand() % 2;
+
+			if (r == 1)
+			{
+				printw("CORNO");
+				seed++;
+				if (seed == 4)
+				seed = 0;
+				tiros_alien = alien_atira(obj, placa, number,tiros_alien, &seed);
+			}
+		}
+		
+
 		/* Empurra a placa pro lado */
 
 		if (temporizador % dificuldade == 0)
@@ -203,6 +216,7 @@ while(dificuldade > 0)
 				deletecolumn(m,placa,&right);
 			else
 				deletecolumn(m,placa,&right);
+
 
 		}
 
@@ -246,10 +260,10 @@ while(dificuldade > 0)
 			contador++;
 
 		temporizador++;
-
-
+		co++;
 
 	}
+	limitador -= 3;
 	dificuldade--;
 	free(obj);
 	if (!ganhou)

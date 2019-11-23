@@ -37,3 +37,25 @@ void imprime_fila(t_fila *f)
       aux = aux -> next;
     }
 }
+int desenfileira(t_fila *f)
+{
+   tiro *aux;
+   if (f -> begin == NULL && f -> end == NULL)
+   {
+       return 1;
+   }
+   else if ( f -> begin  !=  f -> end )
+   {
+       aux = f -> begin;
+       f -> begin = f -> begin -> next;
+       free(aux);
+   }
+   else
+   {
+       aux = f -> begin;
+       f -> begin = NULL;
+       f -> end  = NULL;
+       free(aux);
+   }
+   return 1;
+}
