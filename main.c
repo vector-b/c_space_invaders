@@ -6,25 +6,26 @@
 #include "space.h"
 int main()
 {
+	/* Declaração de variaveis auxiliares */ 
 	int lin,col;
 	int tlin,tcol;
-	int score = 0;
-	int i,j,right,changed;
-	int ganhou = 1;
-	int last = 0;
-	int canhao_atingido = 0;
-	int co = 0;
+	int score, right, changed, canhao_atingido, contador, limitador, ganhou, co,  i, j;
+	
+	/*Inicialização das variaveis */
+	score = 0;
+	ganhou = 1;
+	last = 0;
+	canhao_atingido = 0;
+	co = 0;
+	contador = 1;
+	limitador = 21;
 
-	int limitador = 21;
-
-	//system("mpg123 lavender.mp3 &");
 	/* Inicialização dos recursos ncurses */
 	initscr();				
 	clear();	
 	refresh();
 	start_color();
 	init_pair(1, COLOR_WHITE, COLOR_BLACK);
-	init_pair(2, COLOR_WHITE, COLOR_BLUE);
 	wattron(stdscr, COLOR_PAIR(1));
 	getmaxyx(stdscr, tlin, tcol);
 	cbreak();               /* desabilita o buffer de entrada */
@@ -32,49 +33,45 @@ int main()
     nodelay(stdscr, TRUE);  /* faz com que getch não aguarde a digitação */
     keypad(stdscr, TRUE);   /* permite a leitura das setas */
     curs_set(FALSE);        /* não mostra o cursor na tela */
+
+    /* Tamanho da tela */
 	lin = 37;
 	col = 150;
 
-
+	/* Verificação -> tamanho da tela */
 	if (tlin < 37 || tcol < 150)
 	{
 		endwin();
 		printf("Tamanho de tela insuficiente\n");
 		exit(1);
 	}
-	int contador = 1;
+
 	/* Inicia o mapa */
 	mapa *m;
 	m = malloc(sizeof(m));
-
+	/* Inicia a placa que move os aliens */
 	placa_a *placa;
 	placa = malloc(sizeof(placa));
-
+	/* Inicia a lista de objetos do programa */ 
 	t_lista *obj;
-
-
+	/* Inicia a fila de tiros do aliens */
 	t_fila *tiros_alien;
 
 
+	/* Inicia a dificuldade  6 -> 1 */  
 	int dificuldade = 6;
 
 while(dificuldade > 0)
 {
 	co = 0;
-
+	/* Realoca as listas a cada nova fase */
 	obj  = malloc(sizeof(obj));
 
 	obj -> begin = NULL;
 
-
 	tiros_alien = malloc(sizeof(tiros));
 
 	tiros_alien -> size = 0;
-
-
-
-
-
 
 	int temporizador = 1;
 	
@@ -114,29 +111,36 @@ while(dificuldade > 0)
 	int number = placa -> numero_aliens / 3;
 
 
-	while (ganhou) /*ganhou, perdeu ou apertou esc*/
+	while (ganhou) /*Enquanto ainda não perdeu, prossiga*/
 	{
 
 		int seed = 0;
 
+		/* Diminui o tamanho da placa quando uma fileira de aliens morre */
 		diminui_placa(obj,placa);
 
+		/* Imprime os tiros de aliens na tela */
 		imprime_tiro(tiros_alien);
 
+		/* Atualiza a posição do tiro dos aliens na fila*/
 		atualiza_tiro(tiros_alien, obj, &canhao_atingido,m);
 
+		/* Se canhão for atingido = Game Over */
 		if (canhao_atingido)
 		{
 			ganhou = 0;
 		}
+		/* Se os aliens acabarem = Proximo level ou vitoria */
 		if (placa -> numero_aliens == 0)
 			break;
 
+		/* Se a placa atingir o canhao = perdeu */
 		if (atinge_canhao(obj, placa, m))
 			ganhou = 0;
 		
 		limpa_topo(m);
 		
+		/* Se a nave_mae esta ativa, caminha para a direita */
 		if (mae)
 		{
 			t_nodo *aux;
@@ -148,28 +152,32 @@ while(dificuldade > 0)
 				mae = 0;
 				contador++;
 			}
-
-
 		}
+		/* Caso o contador seja um multiplo de 120, a nave mãe irá aparecer */
 		if (contador % 120  == 0)
 		{
 			surge_nave(obj,m);
 			mae = 1;
 		}
 
+
+		/* mod  server para verificar se os aliens estão se mexendo, mod = 0 nivel mais rapido */ 
 		int mod = temporizador % dificuldade;
 
+		/*Função que contém outras funções para direcionar e guiar os tiros pelo jogo*/
 		tiros(obj,placa, m, right, &changed, &score, &mae, mod);
 
+		/*Função que determina se os aliens chegaram até o canhão */
 		chocou(placa,obj,m);
 		
 		refresh();
 
+		/* Tempo usado por default no andamento do jogo, principalmente na movimentação do canhão */
 		usleep(50000);
 
 		clear();
 
-
+		/* Semelhante a nave mãe, essa função regula os tiros dos aliens pra mod (21 - 3i), sendo i o numero da fase*/
 		if (co % limitador == 0)
 		{
 			srand(time(NULL));
@@ -177,7 +185,6 @@ while(dificuldade > 0)
 
 			if (r == 1)
 			{
-				printw("CORNO");
 				seed++;
 				if (seed == 4)
 				seed = 0;
@@ -186,12 +193,10 @@ while(dificuldade > 0)
 		}
 		
 
-		/* Empurra a placa pro lado */
-
+		/* Regula o andamento da placa de aliens, e assim determina sua velocidade */
 		if (temporizador % dificuldade == 0)
 		{
-
-
+			/* Responsavel pela colisão com as laterais do mapa */
 			if (m -> data[(placa -> linha)+ (placa -> altura)][(placa -> coluna) + (placa -> largura)] == '|')
 			{
 				right = 0;
@@ -207,11 +212,13 @@ while(dificuldade > 0)
 				deletecolumn(m,placa,&right);
 			}
 
+			/* Se está indo pra direita, aumenta coluna, senão diminui, assim a placa de aliens se move*/
 			if (right)
 				placa -> coluna++;
 			else
 				placa -> coluna--;
 
+			/* Deleta as colunas printadas na posição anterior */
 			if (right)
 				deletecolumn(m,placa,&right);
 			else
@@ -220,26 +227,42 @@ while(dificuldade > 0)
 
 		}
 
-		/* Atualiz a placa no mapa */
+		/* Atualiza a  placa no mapa */
 		transicao(m,placa);
 
-		/* Apaga a parte da placa que ficou pra tras */ 
-	
+		
+		/* Utilizado para chegar as teclas pressionadas pelo usuario, assim movimentando e atirando o canhão */ 
+		/*  <-   a*/
+		/*  ->   d*/
+		/*  p   shoot*/
+		/*  ESC SAIR */
 		switch(getch()) 
 		{
     		case 'd':
     		{
-    			obj -> begin -> col++;	
+    			if (obj -> begin -> col + obj -> begin -> larg -1  != 146)
+    			{
+    				obj -> begin -> col++;
+    			}	
         		break;
     		}
     		case 'a':
     		{
-    			obj -> begin -> col--;
+    			if (obj -> begin -> col != 2)
+    			{
+    				obj -> begin -> col--;
+
+    			}
         		break;
     		}
     		case 'p':
     		{
     			atirar(obj -> begin,m);
+        		break;
+    		}
+    		case 'l':
+    		{
+    			ganhou = 0;
         		break;
     		}
 
@@ -248,6 +271,7 @@ while(dificuldade > 0)
 		imprime_canhao(obj -> begin ,m);
 
 		move(1,70);
+		/* Pontuacao, exibida acima do mapa */
 		printw("SCORE: %d\n",score );
 		/* Printa o mapa e tudo o que estiver dentro */
 		for (i = 0; i < (m -> linhas); i++)
@@ -272,6 +296,7 @@ while(dificuldade > 0)
 	{
 		if (dificuldade != 0)
 		{
+			/* Next Level */ 
 			clear();
 			printw("/\\ \"-.\\ \\   /\\  ___\\   /\\_\\_\\_\\   /\\__  _\\    /\\ \\       /\\  ___\\   /\\ \\ / /  /\\  ___\\   /\\ \\       \n");
 			printw("\\ \\ \\-.  \\  \\ \\  __\\   \\/_/\\_\\/_  \\/_/\\ \\/    \\ \\ \\____  \\ \\  __\\   \\ \\ \' /   \\ \\  __\\   \\ \\ \\____  \n");
@@ -293,17 +318,10 @@ while(dificuldade > 0)
 		printw("  \\/\\_____\\  \\ \\_____\\  \\ \\_____\\     \\ \\__/\".~\\_\\  \\ \\_\\  \\ \\_\\ \"\\_\\   \n ");	
 		printw("  \\/_____/   \\/_____/   \\/_____/      \\/_/   \\/_/   \\/_/   \\/_/ \\/_/ \n");
 		refresh();
-		sleep(8);
+		sleep(4);
 	}
 }
 
-	
-
-
-
-	//imprime_lista(obj);
-
-	//==sleep(2);
 
 
 	/* Desaloca o que for necessário */
@@ -311,13 +329,7 @@ while(dificuldade > 0)
 	free(obj);
 	free(placa);
 	free(obj);
-	/*for (int i = 0; i < lin; i++)
-	{
-		free(m -> data[i]);
-	}
-	free(m -> data);
-	free(m);*/
-	/*Desalocar placa*/
+	free(m);
 	/*Desalocar mapa*/
 
 	clear();

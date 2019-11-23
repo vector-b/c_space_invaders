@@ -219,6 +219,7 @@ void imprime_barreiras(mapa *m,t_nodo *n)
 t_fila  *alien_atira(t_lista *l , placa_a *p, int number, t_fila *f, int *seed)
 {
 
+
 	t_nodo *aux;
 	t_nodo *chose;
 	chose = NULL;
@@ -226,6 +227,7 @@ t_fila  *alien_atira(t_lista *l , placa_a *p, int number, t_fila *f, int *seed)
 	int tam = 0;
 	srand(time(NULL));
 	int r = ((*seed * rand()) % (number))+1;
+	/* Sorteia um número de aliens por coluna para atirar */
 	while(aux != NULL)
 	{
 		if ((aux -> type >= 2) && (aux -> type <= 4))
@@ -237,11 +239,12 @@ t_fila  *alien_atira(t_lista *l , placa_a *p, int number, t_fila *f, int *seed)
 		}
 		aux = aux -> next;			
 	}
+	/* Após a escolhe, enfileira um tiro na posição debaixo do alien */
 	if (chose != NULL)
 	{
 		if (chose -> type == 2)
 		{
-			enfileira(p -> linha + chose -> lin + chose -> alt, p -> coluna + chose -> col + chose -> larg/2, f);
+			enfileira(p -> linha + chose -> lin + chose -> alt+2, p -> coluna + chose -> col + chose -> larg/2, f);
 		}
 		else
 		{
@@ -249,7 +252,6 @@ t_fila  *alien_atira(t_lista *l , placa_a *p, int number, t_fila *f, int *seed)
 		}
 		
 	}
-	/* TEM QUE ARRUMAR O NUMERO DE ALIENS NO NUMBER, OU SEJA ACERTAR O MESMO NUMERO POR LINHAS */
 	return f;
 }
 void atualiza_tiro(t_fila *f, t_lista *l, int *canhao, mapa *m)
@@ -332,7 +334,7 @@ void imprime_tiro(t_fila *f)
 }
 void gera_alien(t_lista *l,placa_a *p, int linIni,int colIni, int tipo, int n)
 {
-
+	/* Gera os alienigienas para colocar na placa, de acordo com o seu tipo especificado */
 	if (tipo == 1)
 	{
 		p -> data[linIni][colIni+1] = 'A';
@@ -384,6 +386,7 @@ void gera_alien(t_lista *l,placa_a *p, int linIni,int colIni, int tipo, int n)
 
 int chocou(placa_a *p, t_lista *l, mapa *m)
 {
+	/* Caso a placa chegue proximo a barreira, as barreiras são desativadas */
 	if (p -> linha + p -> altura == m -> linhas - 9)
 	{
 		remove_barreira(l,m);
@@ -410,16 +413,13 @@ void tiros(t_lista *l,placa_a *p, mapa *m, int right, int *changed, int *score, 
 
 	sai_tiro(m, p);
 
-
 	busca_tiro_placa(p, right, changed, mod);
 
-
 	atinge_mae(l, m, score, mae);
-
-
 }
 void deletecolumn(mapa *m, placa_a *p, int *right)
 {
+	/* Deleta a primeira ou ultima coluna da placa impressa no mapa de acordo com a direção */
 	int i;
 	if (*right)
 	{
@@ -435,6 +435,7 @@ void deletecolumn(mapa *m, placa_a *p, int *right)
 }
 void deletetop(mapa *m, placa_a *p)
 {
+	
 	int i,k;
 	p -> linha++;
 	for (i = 0; i < p -> altura; i++)
