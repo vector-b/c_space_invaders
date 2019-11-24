@@ -259,7 +259,7 @@ while(dificuldade > 0)
     			atirar(obj -> begin,m);
         		break;
     		}
-    		case 'l':
+    		case 27:
     		{
     			ganhou = 0;
         		break;

@@ -1,10 +1,12 @@
-CC=gcc
-CFLAGS=-Wall -ansi
-DEPS = space.c lista.c fila.c
-OBJ = space_invaders.o  
+OBJS =  main.c
+TARG = space_invaders 
+CFLAG = -Wall 
+CC = gcc
+INCLUDE = lista.c fila.c space.c
+LIBS = -lncurses
 
-%.o: %.c $(DEPS)
-	$(CC) -o $@ $< $(CFLAGS)
+hello:${OBJS}
+	${CC} -o  ${TARG} ${OBJS} ${INCLUDE} ${LIBS} ${CFLAG}
 
-space_invaders: $(OBJ)
-	$(CC) -o $(DEPS) $(CFLAGS)
+clean:
+	-rm -f *.o space_invaders
